@@ -3,8 +3,8 @@ title: "Building Solstice Cipher: A Light-Based Puzzle Game for the Browser"
 description: "How I built a complete browser puzzle game with light ray casting, mirror physics, and cipher decoding mechanics for the Dev.to Solstice Hackathon"
 published: false
 tags: [javascript, gamedev, webdev, hackathon]
-canonical_url:
-cover_image:
+canonical_url: https://github.com/fanioz/solstice-cipher
+cover_image: https://fanioz.github.io/solstice-cipher/screenshot.png
 ---
 
 # Building Solstice Cipher: A Light-Based Puzzle Game for the Browser
@@ -189,9 +189,11 @@ Building this game taught me several unexpected lessons:
 
 You can play Solstice Cipher right in your browser—no downloads required. The complete game is hosted at:
 
-**[Demo link will be added before publication]**
+**[Play Solstice Cipher now](https://fanioz.github.io/solstice-cipher/)** - No downloads required, runs in your browser
 
 Or copy the code and run it locally—everything's in a single HTML file.
+
+**[Get the source code](https://github.com/fanioz/solstice-cipher)** - Available under MIT license
 
 ## The Complete Cipher
 
