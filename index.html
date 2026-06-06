@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solstice Cipher</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e8e8e8;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .game-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            text-align: center;
+            padding: 1rem 0;
+            border-bottom: 2px solid #1342FF;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #1342FF;
+            text-shadow: 0 0 20px rgba(19, 66, 255, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-style: italic;
+            color: #d4af37;
+            font-size: 1.1rem;
+        }
+
+        .game-area {
+            flex: 1;
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .room-container {
+            flex: 2;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid #1342FF;
+            border-radius: 8px;
+            padding: 1.5rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .room-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #1342FF;
+        }
+
+        .room-title {
+            font-size: 1.3rem;
+            color: #d4af37;
+        }
+
+        .timer {
+            font-family: 'Courier New', monospace;
+            color: #1342FF;
+            font-size: 1.1rem;
+        }
+
+        .room {
+            flex: 1;
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .light-ray {
+            position: absolute;
+            background: linear-gradient(90deg, rgba(255, 255, 200, 0.8), rgba(255, 255, 150, 0.3));
+            height: 3px;
+            transform-origin: left center;
+            pointer-events: none;
+            box-shadow: 0 0 10px rgba(255, 255, 200, 0.5);
+        }
+
+        .cipher-symbol {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: rgba(19, 66, 255, 0.3);
+            font-weight: bold;
+            border: 2px dashed rgba(19, 66, 255, 0.2);
+            border-radius: 50%;
+            transition: all 0.5s ease;
+        }
+
+        .cipher-symbol.revealed {
+            color: #1342FF;
+            background: rgba(19, 66, 255, 0.2);
+            border-color: #1342FF;
+            border-style: solid;
+            box-shadow: 0 0 20px rgba(19, 66, 255, 0.6);
+            text-shadow: 0 0 10px rgba(19, 66, 255, 0.8);
+            animation: symbolReveal 0.8s ease-out;
+        }
+
+        @keyframes symbolReveal {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.3);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .room-complete-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .room-complete-title {
+            font-size: 2.5rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.8);
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .room-complete-symbol {
+            font-size: 4rem;
+            color: #1342FF;
+            margin: 1rem 0;
+            text-shadow: 0 0 30px rgba(19, 66, 255, 0.8);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .room-complete-message {
+            font-size: 1.2rem;
+            color: #e8e8e8;
+            margin: 1rem 0;
+            max-width: 400px;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .next-room-btn {
+            margin-top: 2rem;
+            padding: 1rem 3rem;
+            font-size: 1.1rem;
+            background: rgba(212, 175, 55, 0.2);
+            border: 2px solid #d4af37;
+            color: #d4af37;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            animation: buttonGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes buttonGlow {
+            0%, 100% { box-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(212, 175, 55, 0.6); }
+        }
+
+        .next-room-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 35px rgba(212, 175, 55, 0.8);
+            transform: scale(1.05);
+        }
+
+        .victory-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .victory-title {
+            font-size: 3rem;
+            color: #d4af37;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.8);
+            animation: victoryPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes victoryPulse {
+            0%, 100% {
+                transform: scale(1);
+                text-shadow: 0 0 30px rgba(212, 175, 55, 0.8);
+            }
+            50% {
+                transform: scale(1.05);
+                text-shadow: 0 0 50px rgba(212, 175, 55, 1);
+            }
+        }
+
+        .complete-cipher {
+            font-size: 2.5rem;
+            color: #1342FF;
+            letter-spacing: 0.5rem;
+            margin: 2rem 0;
+            text-shadow: 0 0 20px rgba(19, 66, 255, 0.8);
+            animation: cipherReveal 3s ease-out;
+        }
+
+        @keyframes cipherReveal {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .victory-message {
+            font-size: 1.3rem;
+            color: #e8e8e8;
+            max-width: 500px;
+            text-align: center;
+            line-height: 1.8;
+            margin: 1rem 0;
+        }
+
+        .progress-indicator {
+            position: absolute;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(19, 66, 255, 0.2);
+            border: 2px solid rgba(19, 66, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .progress-dot.completed {
+            background: #d4af37;
+            border-color: #d4af37;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+        }
+
+        .progress-dot.current {
+            background: #1342FF;
+            border-color: #1342FF;
+            box-shadow: 0 0 15px rgba(19, 66, 255, 0.8);
+        }
+
+        .sun-indicator {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, #ffd700 0%, #ff8c00 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            top: 20px;
+            right: 20px;
+            transition: all 0.5s ease;
+        }
+
+        .sun-indicator::before {
+            content: '☀';
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            color: #fff;
+        }
+
+        .mirror {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .mirror-inner {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #c0c0c0 0%, #808080 50%, #c0c0c0 100%);
+            border: 3px solid #d4af37;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(19, 66, 255, 0.3);
+        }
+
+        .mirror-inner::before {
+            content: '⬡';
+            font-size: 2rem;
+            color: #1342FF;
+        }
+
+        .mirror:hover .mirror-inner {
+            box-shadow: 0 4px 25px rgba(19, 66, 255, 0.6);
+            border-color: #1342FF;
+        }
+
+        .mirror.selected .mirror-inner {
+            border-color: #1342FF;
+            box-shadow: 0 0 30px rgba(19, 66, 255, 0.8);
+        }
+
+        .controls-panel {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid #d4af37;
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-title {
+            font-size: 1.2rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #d4af37;
+        }
+
+        .controls {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .control-label {
+            font-size: 0.9rem;
+            color: #e8e8e8;
+            font-style: italic;
+        }
+
+        .rotation-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        button {
+            flex: 1;
+            padding: 0.8rem;
+            font-family: Georgia, serif;
+            font-size: 1rem;
+            background: rgba(19, 66, 255, 0.2);
+            border: 2px solid #1342FF;
+            color: #e8e8e8;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: rgba(19, 66, 255, 0.4);
+            box-shadow: 0 0 15px rgba(19, 66, 255, 0.5);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .status {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(19, 66, 255, 0.1);
+            border: 1px solid #1342FF;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            min-height: 60px;
+        }
+
+        .instructions {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid #d4af37;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #d4af37;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+            .game-area {
+                flex-direction: column;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <header>
+            <h1>Solstice Cipher</h1>
+            <p class="subtitle">Decode the shadows before sunset</p>
+        </header>
+
+        <div class="game-area">
+            <div class="room-container">
+                <div class="room-header">
+                    <div class="room-title" id="room-title">Dawn Chamber</div>
+                    <div class="timer" id="timer">06:00 → 12:00</div>
+                    <div class="progress-indicator" id="progress-indicator"></div>
+                </div>
+                <div class="room" id="room">
+                    <div class="sun-indicator" id="sun"></div>
+                    <!-- Mirrors, rays, and symbols will be added here -->
+                </div>
+            </div>
+
+            <div class="controls-panel">
+                <div class="panel-title">Mirror Controls</div>
+                <div class="controls">
+                    <div class="control-group">
+                        <div class="control-label">Selected Mirror</div>
+                        <div id="selected-mirror" class="status">Click a mirror to select it</div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">Rotation</div>
+                        <div class="rotation-controls">
+                            <button id="rotate-left" disabled>↶ -45°</button>
+                            <button id="rotate-right" disabled>+45° ↷</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">Decoded Message</div>
+                        <div id="decoded-message" class="status">_ _ _</div>
+                    </div>
+
+                    <div class="instructions">
+                        <strong>How to play:</strong><br>
+                        1. Click a mirror to select it<br>
+                        2. Use rotation buttons to adjust angle<br>
+                        3. Align mirrors to cast revealing shadows<br>
+                        4. Decode cipher symbols before sunset
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const rooms = [
+            {
+                id: 1,
+                title: 'Dawn Chamber',
+                timer: '06:00 → 09:00',
+                mirrors: [
+                    { id: 1, x: 150, y: 200, rotation: 135 },
+                    { id: 2, x: 350, y: 150, rotation: 45 },
+                    { id: 3, x: 250, y: 300, rotation: 90 }
+                ],
+                cipherSymbols: [
+                    { id: 1, x: 450, y: 380, symbol: 'S', revealed: false },
+                    { id: 2, x: 500, y: 350, symbol: 'U', revealed: false },
+                    { id: 3, x: 520, y: 300, symbol: 'N', revealed: false }
+                ],
+                sunPosition: { x: 50, y: 50 },
+                completed: false
+            },
+            {
+                id: 2,
+                title: 'Morning Hall',
+                timer: '09:00 → 12:00',
+                mirrors: [
+                    { id: 1, x: 100, y: 180, rotation: 120 },
+                    { id: 2, x: 300, y: 120, rotation: 60 },
+                    { id: 3, x: 400, y: 250, rotation: 150 },
+                    { id: 4, x: 200, y: 320, rotation: 30 }
+                ],
+                cipherSymbols: [
+                    { id: 1, x: 480, y: 380, symbol: 'R', revealed: false },
+                    { id: 2, x: 520, y: 320, symbol: 'I', revealed: false },
+                    { id: 3, x: 540, y: 280, symbol: 'S', revealed: false },
+                    { id: 4, x: 500, y: 220, symbol: 'E', revealed: false }
+                ],
+                sunPosition: { x: 80, y: 60 },
+                completed: false
+            },
+            {
+                id: 3,
+                title: 'Noon Sanctum',
+                timer: '12:00 → 15:00',
+                mirrors: [
+                    { id: 1, x: 120, y: 150, rotation: 90 },
+                    { id: 2, x: 280, y: 100, rotation: 135 },
+                    { id: 3, x: 380, y: 200, rotation: 45 },
+                    { id: 4, x: 250, y: 300, rotation: 180 },
+                    { id: 5, x: 450, y: 280, rotation: 270 }
+                ],
+                cipherSymbols: [
+                    { id: 1, x: 500, y: 380, symbol: 'A', revealed: false },
+                    { id: 2, x: 530, y: 340, symbol: 'N', revealed: false },
+                    { id: 3, x: 550, y: 300, symbol: 'D', revealed: false }
+                ],
+                sunPosition: { x: 100, y: 40 },
+                completed: false
+            },
+            {
+                id: 4,
+                title: 'Afternoon Court',
+                timer: '15:00 → 18:00',
+                mirrors: [
+                    { id: 1, x: 80, y: 200, rotation: 110 },
+                    { id: 2, x: 250, y: 140, rotation: 70 },
+                    { id: 3, x: 350, y: 220, rotation: 130 },
+                    { id: 4, x: 180, y: 320, rotation: 50 },
+                    { id: 5, x: 420, y: 180, rotation: 160 }
+                ],
+                cipherSymbols: [
+                    { id: 1, x: 480, y: 370, symbol: 'S', revealed: false },
+                    { id: 2, x: 520, y: 330, symbol: 'E', revealed: false },
+                    { id: 3, x: 540, y: 290, symbol: 'T', revealed: false }
+                ],
+                sunPosition: { x: 60, y: 80 },
+                completed: false
+            },
+            {
+                id: 5,
+                title: 'Sunset Spire',
+                timer: '18:00 → 21:00',
+                mirrors: [
+                    { id: 1, x: 100, y: 170, rotation: 100 },
+                    { id: 2, x: 260, y: 110, rotation: 80 },
+                    { id: 3, x: 360, y: 190, rotation: 140 },
+                    { id: 4, x: 200, y: 290, rotation: 40 },
+                    { id: 5, x: 440, y: 240, rotation: 170 }
+                ],
+                cipherSymbols: [
+                    { id: 1, x: 490, y: 360, symbol: 'S', revealed: false },
+                    { id: 2, x: 530, y: 320, symbol: 'O', revealed: false },
+                    { id: 3, x: 550, y: 280, symbol: 'L', revealed: false }
+                ],
+                sunPosition: { x: 40, y: 100 },
+                completed: false
+            }
+        ];
+
+        const game = {
+            currentRoomIndex: 0,
+            selectedMirror: null,
+            collectedSymbols: [],
+            isComplete: false
+        };
+
+        const room = document.getElementById('room');
+        const roomTitleEl = document.getElementById('room-title');
+        const timerEl = document.getElementById('timer');
+        const progressIndicator = document.getElementById('progress-indicator');
+        const sunEl = document.getElementById('sun');
+        const selectedMirrorDisplay = document.getElementById('selected-mirror');
+        const decodedMessageDisplay = document.getElementById('decoded-message');
+        const rotateLeftBtn = document.getElementById('rotate-left');
+        const rotateRightBtn = document.getElementById('rotate-right');
+
+        function getCurrentRoom() {
+            return rooms[game.currentRoomIndex];
+        }
+
+        function calculateAngle(fromX, fromY, toX, toY) {
+            return Math.atan2(toY - fromY, toX - fromX) * (180 / Math.PI);
+        }
+
+        function calculateDistance(fromX, fromY, toX, toY) {
+            return Math.sqrt(Math.pow(toX - fromX, 2) + Math.pow(toY - fromY, 2));
+        }
+
+        function castLightRays() {
+            // Clear existing rays
+            room.querySelectorAll('.light-ray').forEach(ray => ray.remove());
+
+            const currentRoom = getCurrentRoom();
+            const sunX = currentRoom.sunPosition.x;
+            const sunY = currentRoom.sunPosition.y;
+
+            // Reset cipher symbols
+            currentRoom.cipherSymbols.forEach(symbol => symbol.revealed = false);
+
+            // Cast rays from sun to each mirror
+            currentRoom.mirrors.forEach(mirror => {
+                const mirrorCenterX = mirror.x + 30;
+                const mirrorCenterY = mirror.y + 30;
+
+                // Ray from sun to mirror
+                createLightRay(sunX, sunY, mirrorCenterX, mirrorCenterY);
+
+                // Calculate reflection angle based on mirror rotation
+                const incidentAngle = calculateAngle(sunX, sunY, mirrorCenterX, mirrorCenterY);
+                const normalAngle = mirror.rotation - 90;
+                const reflectionAngle = 2 * normalAngle - incidentAngle - 180;
+
+                // Cast reflected ray
+                const rayLength = 800;
+                const reflectedEndX = mirrorCenterX + Math.cos(reflectionAngle * Math.PI / 180) * rayLength;
+                const reflectedEndY = mirrorCenterY + Math.sin(reflectionAngle * Math.PI / 180) * rayLength;
+
+                createLightRay(mirrorCenterX, mirrorCenterY, reflectedEndX, reflectedEndY, true);
+
+                // Check if reflected ray hits any cipher symbols
+                currentRoom.cipherSymbols.forEach(symbol => {
+                    if (rayHitsSymbol(mirrorCenterX, mirrorCenterY, reflectedEndX, reflectedEndY, symbol)) {
+                        symbol.revealed = true;
+                    }
+                });
+            });
+
+            renderCipherSymbols();
+            updateDecodedMessage();
+        }
+
+        function updateDecodedMessage() {
+            const currentRoom = getCurrentRoom();
+            const message = currentRoom.cipherSymbols
+                .map(s => s.revealed ? s.symbol : '_')
+                .join(' ');
+            decodedMessageDisplay.textContent = message;
+
+            // Check if all symbols are revealed
+            const allRevealed = currentRoom.cipherSymbols.every(s => s.revealed);
+            if (allRevealed && !currentRoom.completed) {
+                currentRoom.completed = true;
+                decodedMessageDisplay.style.color = '#d4af37';
+                decodedMessageDisplay.style.fontWeight = 'bold';
+                decodedMessageDisplay.textContent += ' ✓';
+
+                // Collect symbols and show completion
+                setTimeout(() => showRoomComplete(), 500);
+            }
+        }
+
+        function showRoomComplete() {
+            const currentRoom = getCurrentRoom();
+
+            // Collect the revealed symbols
+            currentRoom.cipherSymbols.forEach(symbol => {
+                if (symbol.revealed && !game.collectedSymbols.includes(symbol.symbol)) {
+                    game.collectedSymbols.push(symbol.symbol);
+                }
+            });
+
+            // Create completion overlay using DOM methods
+            const overlay = document.createElement('div');
+            overlay.className = 'room-complete-overlay';
+
+            const isLastRoom = game.currentRoomIndex === rooms.length - 1;
+
+            const title = document.createElement('div');
+            title.className = 'room-complete-title';
+            title.textContent = isLastRoom ? 'Chamber Unlocked' : 'Room Complete';
+
+            const symbol = document.createElement('div');
+            symbol.className = 'room-complete-symbol';
+            symbol.textContent = currentRoom.cipherSymbols.map(s => s.symbol).join(' ');
+
+            const message = document.createElement('div');
+            message.className = 'room-complete-message';
+            message.textContent = isLastRoom
+                ? 'You have decoded all chambers of the Solstice Cipher.'
+                : `The ${currentRoom.title} surrenders its secrets. ${rooms.length - game.currentRoomIndex - 1} chambers remain.`;
+
+            const button = document.createElement('button');
+            button.className = 'next-room-btn';
+            button.textContent = isLastRoom ? 'Reveal the Cipher' : 'Enter Next Chamber';
+            button.addEventListener('click', () => {
+                if (isLastRoom) {
+                    showVictory();
+                } else {
+                    advanceToNextRoom();
+                }
+            });
+
+            overlay.appendChild(title);
+            overlay.appendChild(symbol);
+            overlay.appendChild(message);
+            overlay.appendChild(button);
+
+            room.appendChild(overlay);
+        }
+
+        function advanceToNextRoom() {
+            game.currentRoomIndex++;
+            game.selectedMirror = null;
+            loadRoom();
+        }
+
+        function showVictory() {
+            game.isComplete = true;
+
+            const victoryScreen = document.createElement('div');
+            victoryScreen.className = 'victory-screen';
+
+            const title = document.createElement('div');
+            title.className = 'victory-title';
+            title.textContent = '✦ Solstice Decoded ✦';
+
+            const cipher = document.createElement('div');
+            cipher.className = 'complete-cipher';
+            cipher.textContent = game.collectedSymbols.join('');
+
+            const message = document.createElement('div');
+            message.className = 'victory-message';
+            message.textContent = 'Across five chambers, from dawn to sunset, you have unraveled the ancient cipher. The solstice secrets are now yours. What wisdom will you unlock next?';
+
+            const quote = document.createElement('div');
+            quote.className = 'room-complete-message';
+            const quoteEm = document.createElement('em');
+            quoteEm.textContent = '"In the balance of light and shadow, truth reveals itself."';
+            quote.appendChild(quoteEm);
+
+            victoryScreen.appendChild(title);
+            victoryScreen.appendChild(cipher);
+            victoryScreen.appendChild(message);
+            victoryScreen.appendChild(quote);
+
+            document.body.appendChild(victoryScreen);
+        }
+
+        function loadRoom() {
+            const currentRoom = getCurrentRoom();
+
+            // Clear any existing overlays
+            room.querySelectorAll('.room-complete-overlay').forEach(el => el.remove());
+
+            // Update UI
+            roomTitleEl.textContent = currentRoom.title;
+            timerEl.textContent = currentRoom.timer;
+            sunEl.style.left = currentRoom.sunPosition.x + 'px';
+            sunEl.style.top = currentRoom.sunPosition.y + 'px';
+
+            // Update progress indicator
+            updateProgressIndicator();
+
+            // Reset controls
+            selectedMirrorDisplay.textContent = 'Click a mirror to select it';
+            rotateLeftBtn.disabled = true;
+            rotateRightBtn.disabled = true;
+            decodedMessageDisplay.style.color = '';
+            decodedMessageDisplay.style.fontWeight = '';
+
+            // Render room elements
+            renderMirrors();
+            renderCipherSymbols();
+            castLightRays();
+        }
+
+        function updateProgressIndicator() {
+            progressIndicator.innerHTML = '';
+
+            rooms.forEach((room, index) => {
+                const dot = document.createElement('div');
+                dot.className = 'progress-dot';
+
+                if (room.completed) {
+                    dot.classList.add('completed');
+                } else if (index === game.currentRoomIndex) {
+                    dot.classList.add('current');
+                }
+
+                progressIndicator.appendChild(dot);
+            });
+        }
+
+        function createLightRay(fromX, fromY, toX, toY, isReflected = false) {
+            const ray = document.createElement('div');
+            ray.className = 'light-ray' + (isReflected ? ' reflected' : '');
+
+            const angle = calculateAngle(fromX, fromY, toX, toY);
+            const length = calculateDistance(fromX, fromY, toX, toY);
+
+            ray.style.left = fromX + 'px';
+            ray.style.top = fromY + 'px';
+            ray.style.width = length + 'px';
+            ray.style.transform = `rotate(${angle}deg)`;
+
+            room.appendChild(ray);
+        }
+
+        function rayHitsSymbol(rayStartX, rayStartY, rayEndX, rayEndY, symbol) {
+            const symbolCenterX = symbol.x + 25;
+            const symbolCenterY = symbol.y + 25;
+
+            // Calculate distance from point to line segment
+            const A = rayStartX - symbolCenterX;
+            const B = rayStartY - symbolCenterY;
+            const C = rayEndX - rayStartX;
+            const D = rayEndY - rayStartY;
+
+            const dot = A * C + B * D;
+            const lenSq = C * C + D * D;
+            let param = -1;
+
+            if (lenSq !== 0) param = dot / lenSq;
+
+            let closestX, closestY;
+
+            if (param < 0) {
+                closestX = rayStartX;
+                closestY = rayStartY;
+            } else if (param > 1) {
+                closestX = rayEndX;
+                closestY = rayEndY;
+            } else {
+                closestX = rayStartX + param * C;
+                closestY = rayStartY + param * D;
+            }
+
+            const distance = calculateDistance(closestX, closestY, symbolCenterX, symbolCenterY);
+
+            return distance < 30;
+        }
+
+        function renderMirrors() {
+            room.querySelectorAll('.mirror').forEach(m => m.remove());
+
+            const currentRoom = getCurrentRoom();
+
+            currentRoom.mirrors.forEach(mirror => {
+                const mirrorEl = document.createElement('div');
+                mirrorEl.className = 'mirror';
+                if (game.selectedMirror && game.selectedMirror.id === mirror.id) {
+                    mirrorEl.classList.add('selected');
+                }
+                mirrorEl.style.left = mirror.x + 'px';
+                mirrorEl.style.top = mirror.y + 'px';
+                mirrorEl.style.transform = `rotate(${mirror.rotation}deg)`;
+
+                const innerEl = document.createElement('div');
+                innerEl.className = 'mirror-inner';
+                mirrorEl.appendChild(innerEl);
+                mirrorEl.addEventListener('click', () => selectMirror(mirror));
+
+                room.appendChild(mirrorEl);
+            });
+        }
+
+        function renderCipherSymbols() {
+            room.querySelectorAll('.cipher-symbol').forEach(s => s.remove());
+
+            const currentRoom = getCurrentRoom();
+
+            currentRoom.cipherSymbols.forEach(symbol => {
+                const symbolEl = document.createElement('div');
+                symbolEl.className = 'cipher-symbol';
+                if (symbol.revealed) {
+                    symbolEl.classList.add('revealed');
+                }
+                symbolEl.style.left = symbol.x + 'px';
+                symbolEl.style.top = symbol.y + 'px';
+                symbolEl.textContent = symbol.revealed ? symbol.symbol : '?';
+
+                room.appendChild(symbolEl);
+            });
+        }
+
+        function selectMirror(mirror) {
+            game.selectedMirror = mirror;
+            selectedMirrorDisplay.textContent = `Mirror ${mirror.id} at ${mirror.rotation}°`;
+            rotateLeftBtn.disabled = false;
+            rotateRightBtn.disabled = false;
+            renderMirrors();
+        }
+
+        function rotateMirror(direction) {
+            if (!game.selectedMirror) return;
+
+            const rotation = direction === 'left' ? -45 : 45;
+            game.selectedMirror.rotation = (game.selectedMirror.rotation + rotation + 360) % 360;
+
+            selectedMirrorDisplay.textContent = `Mirror ${game.selectedMirror.id} at ${game.selectedMirror.rotation}°`;
+            renderMirrors();
+            castLightRays();
+        }
+
+        rotateLeftBtn.addEventListener('click', () => rotateMirror('left'));
+        rotateRightBtn.addEventListener('click', () => rotateMirror('right'));
+
+        // Initialize
+        loadRoom();
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!game.selectedMirror) return;
+
+            if (e.key === 'ArrowLeft' || e.key === 'q') {
+                rotateMirror('left');
+            } else if (e.key === 'ArrowRight' || e.key === 'e') {
+                rotateMirror('right');
+            }
+        });
+    </script>
+</body>
+</html>
