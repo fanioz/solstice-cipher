@@ -1,0 +1,84 @@
+[gd_scene load_steps=7 format=3 uid="uid://level_2_uid"]
+
+[ext_resource type="Script" path="res://src/gameplay/main.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://mirror_uid" path="res://src/gameplay/mirror.tscn" id="2_mirror"]
+[ext_resource type="PackedScene" uid="uid://symbol_uid" path="res://src/gameplay/symbol.tscn" id="3_symbol"]
+[ext_resource type="PackedScene" uid="uid://splitter_uid" path="res://src/gameplay/splitter.tscn" id="4_splitter"]
+[ext_resource type="PackedScene" uid="uid://cipher_ui_uid" path="res://src/ui/cipher_ui.tscn" id="5_ui"]
+
+[sub_resource type="Environment" id="Environment_glow"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 1.5
+glow_strength = 1.5
+glow_bloom = 0.5
+glow_hdr_threshold = 0.8
+
+[node name="Level2" type="Node2D"]
+script = ExtResource("1_script")
+next_level_path = "res://src/ui/end_screen.tscn"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_glow")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 2
+color = Color(0.05, 0.05, 0.08, 1)
+
+[node name="DustParticles" type="CPUParticles2D" parent="."]
+position = Vector2(640, 360)
+amount = 150
+lifetime = 15.0
+preprocess = 15.0
+emission_shape = 3
+emission_rect_extents = Vector2(640, 360)
+gravity = Vector2(0, -2)
+initial_velocity_min = 2.0
+initial_velocity_max = 10.0
+scale_amount_min = 3.0
+scale_amount_max = 8.0
+color = Color(1.0, 0.9, 0.5, 0.3)
+
+[node name="Sun" type="Marker2D" parent="."]
+position = Vector2(100, 360)
+
+[node name="RayLines" type="Node2D" parent="."]
+
+[node name="Splitter1" parent="." instance=ExtResource("4_splitter")]
+position = Vector2(400, 360)
+
+[node name="Splitter2" parent="." instance=ExtResource("4_splitter")]
+position = Vector2(600, 360)
+
+[node name="Splitter3" parent="." instance=ExtResource("4_splitter")]
+position = Vector2(800, 360)
+
+[node name="Mirror1" parent="." instance=ExtResource("2_mirror")]
+position = Vector2(400, 600)
+
+[node name="Mirror2" parent="." instance=ExtResource("2_mirror")]
+position = Vector2(600, 600)
+
+[node name="Symbol1" parent="." instance=ExtResource("3_symbol")]
+position = Vector2(1000, 200)
+letter = "M"
+cipher_index = 0
+
+[node name="Symbol2" parent="." instance=ExtResource("3_symbol")]
+position = Vector2(200, 600)
+letter = "O"
+cipher_index = 1
+
+[node name="Symbol3" parent="." instance=ExtResource("3_symbol")]
+position = Vector2(800, 50)
+letter = "O"
+cipher_index = 2
+
+[node name="Symbol4" parent="." instance=ExtResource("3_symbol")]
+position = Vector2(1100, 600)
+letter = "N"
+cipher_index = 3
+
+[node name="CipherUI" parent="." instance=ExtResource("5_ui")]
