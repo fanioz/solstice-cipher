@@ -11,6 +11,19 @@ var initial_angle: float = 0.0
 
 func _ready() -> void:
 	interact_area.input_event.connect(_on_interact_area_input_event)
+	interact_area.mouse_entered.connect(_on_mouse_entered)
+	interact_area.mouse_exited.connect(_on_mouse_exited)
+
+func _on_mouse_entered() -> void:
+	Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
+	var tween = create_tween()
+	tween.tween_property(self, "scale", Vector2(1.05, 1.05), 0.1)
+
+func _on_mouse_exited() -> void:
+	if not is_moving and not is_rotating:
+		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+		var tween = create_tween()
+		tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.1)
 
 func _draw() -> void:
 	draw_arc(Vector2.ZERO, 60.0, 0, TAU, 32, Color(1.0, 1.0, 1.0, 0.2), 2.0, true)
@@ -35,12 +48,16 @@ func _input(event: InputEvent) -> void:
 		if is_moving:
 			is_moving = false
 			global_position = global_position.snapped(Vector2(10, 10))
+			Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+			scale = Vector2(1.0, 1.0)
 			state_changed.emit()
 			
 		if is_rotating:
 			is_rotating = false
 			var snapped_rotation = round(rotation / (PI / 12.0)) * (PI / 12.0) # Snap to 15 degrees
 			rotation = snapped_rotation
+			Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+			scale = Vector2(1.0, 1.0)
 			state_changed.emit()
 			
 	if event is InputEventMouseMotion:
