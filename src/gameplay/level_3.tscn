@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://level_2_uid"]
+[gd_scene load_steps=7 format=3 uid="uid://level_3_uid"]
 
 [ext_resource type="Script" path="res://src/gameplay/main.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://mirror_uid" path="res://src/gameplay/mirror.tscn" id="2_mirror"]
@@ -14,9 +14,9 @@ glow_strength = 1.5
 glow_bloom = 0.5
 glow_hdr_threshold = 0.8
 
-[node name="Level2" type="Node2D"]
+[node name="Level3" type="Node2D"]
 script = ExtResource("1_script")
-next_level_path = "res://src/gameplay/level_3.tscn"
+next_level_path = "res://src/ui/end_screen.tscn"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_glow")
@@ -44,27 +44,32 @@ scale_amount_max = 8.0
 color = Color(1.0, 0.9, 0.5, 0.3)
 
 [node name="Sun" type="Marker2D" parent="."]
-position = Vector2(100, 900)
+position = Vector2(100, 800)
 
 [node name="RayLines" type="Node2D" parent="."]
 
 [node name="Splitter1" parent="." instance=ExtResource("4_splitter")]
-position = Vector2(360, 900)
+position = Vector2(360, 800)
 
 [node name="Splitter2" parent="." instance=ExtResource("4_splitter")]
-position = Vector2(360, 600)
+position = Vector2(360, 450)
 
 [node name="Mirror1" parent="." instance=ExtResource("2_mirror")]
-position = Vector2(150, 500)
+position = Vector2(100, 300)
 
 [node name="Symbol1" parent="." instance=ExtResource("3_symbol")]
-position = Vector2(600, 900)
-letter = "O"
+position = Vector2(620, 800)
+letter = "S"
 cipher_index = 0
 
 [node name="Symbol2" parent="." instance=ExtResource("3_symbol")]
-position = Vector2(100, 600)
-letter = "N"
+position = Vector2(100, 450)
+letter = "U"
 cipher_index = 1
+
+[node name="Symbol3" parent="." instance=ExtResource("3_symbol")]
+position = Vector2(360, 300)
+letter = "N"
+cipher_index = 2
 
 [node name="CipherUI" parent="." instance=ExtResource("5_ui")]

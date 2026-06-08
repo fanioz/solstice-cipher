@@ -43,24 +43,24 @@ default_color = Color(2, 1.8, 1, 0.8)
 
 [node name="SplitterSprite" type="Sprite2D" parent="."]
 material = SubResource("CanvasItemMaterial_add")
-position = Vector2(900, 420)
+position = Vector2(500, 420)
 rotation = 0.785398
 scale = Vector2(0.12, 0.12)
 texture = ExtResource("2_texture")
 
 [node name="LaserBeam2" type="Line2D" parent="."]
-position = Vector2(900, 420)
+position = Vector2(500, 420)
 points = PackedVector2Array(0, 0, 0, -600)
 width = 8.0
 default_color = Color(2, 1.8, 1, 0.8)
 
 [node name="DustParticles" type="CPUParticles2D" parent="."]
-position = Vector2(640, 360)
-amount = 150
+position = Vector2(640, 640)
+amount = 400
 lifetime = 15.0
 preprocess = 15.0
 emission_shape = 3
-emission_rect_extents = Vector2(640, 360)
+emission_rect_extents = Vector2(1500, 1500)
 gravity = Vector2(0, -2)
 initial_velocity_min = 2.0
 initial_velocity_max = 10.0
