@@ -52,6 +52,16 @@ func _input(event: InputEvent) -> void:
 			rotation = snapped_rotation
 			
 		if was_interacting:
+			if global_position.y > 1120:
+				var briefcase = get_tree().get_first_node_in_group("briefcase_ui")
+				if briefcase:
+					briefcase.return_piece("prism")
+					queue_free()
+					await get_tree().process_frame
+					if is_instance_valid(get_parent()) and get_parent().has_method("calculate_light_rays"):
+						get_parent().calculate_light_rays()
+					return
+
 			var tween = create_tween()
 			tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.1)
 			state_changed.emit()
