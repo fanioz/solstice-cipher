@@ -33,9 +33,9 @@ func _ready() -> void:
         
     call_deferred("calculate_light_rays")
 
-func _on_board_drop_zone_item_dropped_on_board(tool_type: String, drop_position: Vector2, slot_ref) -> void:
+func _on_board_drop_zone_item_dropped_on_board(tool_type: String, drop_position: Vector2, slot_ref: BriefcaseSlot) -> void:
 	# Decrement count
-	slot_ref.count -= 1
+	slot_ref.consume_item()
 	
 	var new_piece: Node2D = null
 	if tool_type == "mirror":
@@ -50,10 +50,7 @@ func _on_board_drop_zone_item_dropped_on_board(tool_type: String, drop_position:
 		# Convert control local position to global, then to Node2D local space
 		new_piece.global_position = $BoardDropZone.get_global_transform() * drop_position
 		# Update rays
-		call_deferred("_update_rays")
-
-func _update_rays() -> void:
-    calculate_light_rays()
+		call_deferred("calculate_light_rays")
 
 func _on_level_solved() -> void:
     print("Cipher Solved! Loading next level...")

@@ -19,6 +19,10 @@ func _ready() -> void:
 		icon_rect.texture = tool_icon
 	self.count = 0
 
+func consume_item() -> void:
+	if count > 0:
+		self.count -= 1
+
 func _get_drag_data(at_position: Vector2) -> Variant:
 	if count <= 0:
 		return null
