@@ -152,24 +152,24 @@ with defined pillars and a player journey. This is where you figure out
 
 ```
 /brainstorm  -->  game-concept.md  -->  /design-review  -->  /setup-engine
-     |                                        |                    |
-     v                                        v                    v
+	 |                                        |                    |
+	 v                                        v                    v
   10 concepts     Concept doc with       Validation          Engine pinned in
   MDA analysis    pillars, MDA,          of concept          technical-preferences.md
   Player motiv.   core loop, USP         document
-                                                                   |
-                                                                   v
-                                                             /prototype
-                                                       (concept prototype — 1-3 days)
-                                                        PROCEED ↓     PIVOT → /brainstorm
-                                                                   |
-                                                                   v (PROCEED)
-                                                             /map-systems
-                                                                   |
-                                                                   v
-                                                            systems-index.md
-                                                            (all systems, deps,
-                                                             priority tiers)
+																   |
+																   v
+															 /prototype
+													   (concept prototype — 1-3 days)
+														PROCEED ↓     PIVOT → /brainstorm
+																   |
+																   v (PROCEED)
+															 /map-systems
+																   |
+																   v
+															systems-index.md
+															(all systems, deps,
+															 priority tiers)
 ```
 
 ### Step 1.1: Brainstorm With /brainstorm
@@ -290,17 +290,17 @@ and then all GDDs are cross-checked for consistency.
 
 ```
 /map-systems next  -->  /design-system  -->  /design-review
-       |                     |                     |
-       v                     v                     v
+	   |                     |                     |
+	   v                     v                     v
   Picks next system    Section-by-section     Validates 8
   from systems-index   GDD authoring          required sections
-                       (incremental writes)   APPROVED/NEEDS REVISION
-       |
-       |  (repeat for each MVP system)
-       v
+					   (incremental writes)   APPROVED/NEEDS REVISION
+	   |
+	   |  (repeat for each MVP system)
+	   v
 /review-all-gdds
-       |
-       v
+	   |
+	   v
   Cross-GDD consistency + design theory review
   PASS / CONCERNS / FAIL
 ```
@@ -440,24 +440,24 @@ gives programmers flat, actionable rules. You also establish UX foundations.
 
 ```
 /create-architecture  -->  /architecture-decision (x N)  -->  /architecture-review
-        |                          |                                   |
-        v                          v                                   v
+		|                          |                                   |
+		v                          v                                   v
   Master architecture       Per-decision ADRs              Validates completeness,
   document covering         in docs/architecture/          dependency ordering,
   all systems               adr-*.md                       engine compatibility
-                                                                      |
-                                                                      v
-                                                         /create-control-manifest
-                                                                      |
-                                                                      v
-                                                         Flat programmer rules
-                                                         docs/architecture/
-                                                         control-manifest.md
-        Also in this phase:
-        -------------------
-        /ux-design  -->  /ux-review
-        Accessibility requirements doc
-        Interaction pattern library
+																	  |
+																	  v
+														 /create-control-manifest
+																	  |
+																	  v
+														 Flat programmer rules
+														 docs/architecture/
+														 control-manifest.md
+		Also in this phase:
+		-------------------
+		/ux-design  -->  /ux-review
+		Accessibility requirements doc
+		Interaction pattern library
 ```
 
 ### Step 3.1: Master Architecture Document
@@ -564,22 +564,22 @@ Vertical Slice that proves the core loop is fun.
 
 ```
 /ux-design  -->  /vertical-slice  -->  /create-epics  -->  /create-stories  -->  /sprint-plan
-    |                   |                   |                   |                       |
-    v                   v                   v                   v                       v
+	|                   |                   |                   |                       |
+	v                   v                   v                   v                       v
   UX specs       Production-quality   Epic files in       Story files in          First sprint with
   design/ux/     end-to-end build     production/         production/             prioritized stories
-                 in prototypes/       epics/*/EPIC.md     epics/*/story-*.md      production/sprints/
-                 PROCEED/PIVOT/KILL   (one per module)    (one per behaviour)     sprint-*.md
-    |                                                          |
-    v                                                          v
+				 in prototypes/       epics/*/EPIC.md     epics/*/story-*.md      production/sprints/
+				 PROCEED/PIVOT/KILL   (one per module)    (one per behaviour)     sprint-*.md
+	|                                                          |
+	v                                                          v
  /ux-review                                             /story-readiness
  (validates specs                                       (validates each story
   before epics)                                          before pickup)
-                                                               |
-                                                               v
-                                                           /dev-story
-                                                         (implements the story,
-                                                          routes to right agent)
+															   |
+															   v
+														   /dev-story
+														 (implements the story,
+														  routes to right agent)
 ```
 
 ### Step 4.1: UX Specs for Key Screens
@@ -746,15 +746,15 @@ is content-complete.
 
 ```
 /sprint-plan new  -->  /story-readiness  -->  implement  -->  /story-done
-       |                     |                    |                |
-       v                     v                    v                v
+	   |                     |                    |                |
+	   v                     v                    v                v
   Sprint created       Story validated      Code written     8-phase review:
   sprint-status.yaml   READY verdict        Tests pass       verify criteria,
   populated                                                  check deviations,
-                                                             update story status
-       |
-       |  (repeat per story until sprint complete)
-       v
+															 update story status
+	   |
+	   |  (repeat per story until sprint complete)
+	   v
   /sprint-status  (quick 30-line snapshot anytime)
   /scope-check    (if scope is growing)
   /retrospective  (at sprint end)
@@ -923,15 +923,15 @@ performance, balance, accessibility, audio, visual polish, and playtesting.
 
 ```
 /perf-profile  -->  /balance-check  -->  /asset-audit  -->  /playtest-report (x3)
-       |                  |                    |                    |
-       v                  v                    v                    v
+	   |                  |                    |                    |
+	   v                  v                    v                    v
   Profile CPU/GPU    Analyze formulas     Verify naming,      Cover: new player,
   memory, optimize   and data for         formats, sizes      mid-game, difficulty
   bottlenecks        broken progressions                      curve
 
   /tech-debt  -->  /team-polish
-       |                |
-       v                v
+	   |                |
+	   v                v
   Track and        Coordinated pass:
   prioritize       performance + art +
   debt items       audio + UX + QA
