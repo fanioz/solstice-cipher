@@ -58,9 +58,6 @@ func _input(event: InputEvent) -> void:
                 if briefcase:
                     briefcase.return_piece("mirror")
                     queue_free()
-                    await get_tree().process_frame
-                    if is_instance_valid(get_parent()) and get_parent().has_method("calculate_light_rays"):
-                        get_parent().calculate_light_rays()
                     return
             
             # Shrink back down when released

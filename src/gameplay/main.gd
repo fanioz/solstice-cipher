@@ -19,9 +19,11 @@ func _ready() -> void:
     for mirror in get_tree().get_nodes_in_group("mirrors"):
         if mirror.has_signal("state_changed"):
             mirror.state_changed.connect(calculate_light_rays)
+        mirror.tree_exiting.connect(_on_piece_tree_exiting)
     for splitter in get_tree().get_nodes_in_group("splitters"):
         if splitter.has_signal("state_changed"):
             splitter.state_changed.connect(calculate_light_rays)
+        splitter.tree_exiting.connect(_on_piece_tree_exiting)
             
     var cipher_ui = get_node_or_null("CipherUI")
     if cipher_ui:
@@ -47,6 +49,7 @@ func _on_board_drop_zone_item_dropped_on_board(tool_type: String, drop_position:
 		add_child(new_piece)
 		if new_piece.has_signal("state_changed"):
 			new_piece.state_changed.connect(calculate_light_rays)
+		new_piece.tree_exiting.connect(_on_piece_tree_exiting)
 		# Convert control local position to global, then to Node2D local space
 		new_piece.global_position = $BoardDropZone.get_global_transform() * drop_position
 		# Update rays
@@ -59,6 +62,9 @@ func _on_level_solved() -> void:
         TransitionManager.transition_to(next_level_path)
     else:
         print("You win the game!")
+
+func _on_piece_tree_exiting() -> void:
+    call_deferred("calculate_light_rays")
 
 func calculate_light_rays() -> void:
     for symbol in get_tree().get_nodes_in_group("symbols"):
