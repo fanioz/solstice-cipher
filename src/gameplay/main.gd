@@ -177,17 +177,17 @@ func _process(delta: float) -> void:
 			seg.line.hide()
 			if seg.collider and seg.collider.is_in_group("symbols"):
 				if seg.collider.has_method("set_illuminated"):
-					seg.collider.set_illuminated(false)
+					seg.collider.set_illuminated(false, seg.color)
 		else:
 			seg.line.show()
 			if animated_dist >= seg.end_dist:
 				seg.line.set_point_position(1, seg.end)
 				if seg.collider and seg.collider.is_in_group("symbols"):
 					if seg.collider.has_method("set_illuminated"):
-						seg.collider.set_illuminated(true)
+						seg.collider.set_illuminated(true, seg.color)
 			else:
 				var t = (animated_dist - seg.start_dist) / (seg.end_dist - seg.start_dist)
 				seg.line.set_point_position(1, seg.start.lerp(seg.end, t))
 				if seg.collider and seg.collider.is_in_group("symbols"):
 					if seg.collider.has_method("set_illuminated"):
-						seg.collider.set_illuminated(false)
+						seg.collider.set_illuminated(false, seg.color)
