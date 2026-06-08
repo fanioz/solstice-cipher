@@ -7,6 +7,13 @@ const MAX_BOUNCES = 15
 const RAY_LENGTH = 3000.0
 const LIGHT_SPEED = 5000.0
 
+const COLOR_MAP = {
+	"white": Color(2.0, 1.8, 1.0, 0.8), # Default HDR gold/white
+	"red": Color(2.5, 0.2, 0.2, 0.8),
+	"green": Color(0.2, 2.5, 0.2, 0.8),
+	"blue": Color(0.2, 0.5, 2.5, 0.8)
+}
+
 @export var initial_inventory: Dictionary = {"mirror": 3}
 @export var next_level_path: String = ""
 
@@ -98,9 +105,9 @@ func calculate_light_rays() -> void:
 	var origin = sun.global_position
 	var direction = Vector2.RIGHT.rotated(sun.rotation)
 	
-	_cast_ray(space_state, origin, direction, MAX_BOUNCES, [], 0.0)
+	_cast_ray(space_state, origin, direction, MAX_BOUNCES, [], 0.0, "white")
 
-func _cast_ray(space_state: PhysicsDirectSpaceState2D, origin: Vector2, direction: Vector2, bounces_left: int, exclude: Array, current_dist: float) -> void:
+func _cast_ray(space_state: PhysicsDirectSpaceState2D, origin: Vector2, direction: Vector2, bounces_left: int, exclude: Array, current_dist: float, ray_color: String) -> void:
 	if bounces_left <= 0:
 		return
 		
@@ -114,7 +121,7 @@ func _cast_ray(space_state: PhysicsDirectSpaceState2D, origin: Vector2, directio
 	
 	var line = Line2D.new()
 	line.width = 4.0
-	line.default_color = Color(2.0, 1.8, 1.0, 0.8) # HDR Soft golden light
+	line.default_color = COLOR_MAP.get(ray_color, COLOR_MAP["white"])
 	line.add_point(origin)
 	line.add_point(origin) # Start at length 0
 	
@@ -138,7 +145,8 @@ func _cast_ray(space_state: PhysicsDirectSpaceState2D, origin: Vector2, directio
 		"end": end_pos,
 		"start_dist": current_dist,
 		"end_dist": end_dist,
-		"collider": collider
+		"collider": collider,
+		"color": ray_color
 	})
 	
 	if result:
@@ -146,7 +154,7 @@ func _cast_ray(space_state: PhysicsDirectSpaceState2D, origin: Vector2, directio
 			var normal = collider.get_normal() if collider.has_method("get_normal") else result.normal
 			var reflection = direction.bounce(normal)
 			var new_origin = end_pos + reflection * 1.0
-			_cast_ray(space_state, new_origin, reflection, bounces_left - 1, [rid], end_dist)
+			_cast_ray(space_state, new_origin, reflection, bounces_left - 1, [rid], end_dist, ray_color)
 			
 		elif collider.is_in_group("splitters"):
 			var normal = collider.get_normal() if collider.has_method("get_normal") else result.normal
@@ -154,11 +162,11 @@ func _cast_ray(space_state: PhysicsDirectSpaceState2D, origin: Vector2, directio
 			
 			# Ray 1: Reflected
 			var reflected_origin = end_pos + reflection * 1.0
-			_cast_ray(space_state, reflected_origin, reflection, bounces_left - 1, [rid], end_dist)
+			_cast_ray(space_state, reflected_origin, reflection, bounces_left - 1, [rid], end_dist, ray_color)
 			
 			# Ray 2: Transmitted (passes straight through)
 			var transmitted_origin = end_pos + direction * 1.0
-			_cast_ray(space_state, transmitted_origin, direction, bounces_left - 1, [rid], end_dist)
+			_cast_ray(space_state, transmitted_origin, direction, bounces_left - 1, [rid], end_dist, ray_color)
 
 func _process(delta: float) -> void:
 	if animated_dist < INF:
