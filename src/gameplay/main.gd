@@ -1,5 +1,8 @@
 extends Node2D
 
+const MIRROR_SCENE = preload("res://src/gameplay/mirror.tscn")
+const SPLITTER_SCENE = preload("res://src/gameplay/splitter.tscn")
+
 const MAX_BOUNCES = 15
 const RAY_LENGTH = 3000.0
 const LIGHT_SPEED = 5000.0
@@ -24,7 +27,33 @@ func _ready() -> void:
     if cipher_ui:
         cipher_ui.cipher_solved.connect(_on_level_solved)
         
+    var drop_zone = get_node_or_null("BoardDropZone")
+    if drop_zone:
+        drop_zone.item_dropped_on_board.connect(_on_board_drop_zone_item_dropped_on_board)
+        
     call_deferred("calculate_light_rays")
+
+func _on_board_drop_zone_item_dropped_on_board(tool_type: String, drop_position: Vector2, slot_ref) -> void:
+	# Decrement count
+	slot_ref.count -= 1
+	
+	var new_piece: Node2D = null
+	if tool_type == "mirror":
+		new_piece = MIRROR_SCENE.instantiate()
+	elif tool_type == "prism":
+		new_piece = SPLITTER_SCENE.instantiate()
+		
+	if new_piece:
+		add_child(new_piece)
+		if new_piece.has_signal("state_changed"):
+			new_piece.state_changed.connect(calculate_light_rays)
+		# Convert control local position to global, then to Node2D local space
+		new_piece.global_position = $BoardDropZone.get_global_transform() * drop_position
+		# Update rays
+		call_deferred("_update_rays")
+
+func _update_rays() -> void:
+    calculate_light_rays()
 
 func _on_level_solved() -> void:
     print("Cipher Solved! Loading next level...")

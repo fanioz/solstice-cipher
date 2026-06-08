@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://symbol_uid" path="res://src/gameplay/symbol.tscn" id="3_symbol"]
 [ext_resource type="PackedScene" uid="uid://splitter_uid" path="res://src/gameplay/splitter.tscn" id="4_splitter"]
 [ext_resource type="PackedScene" uid="uid://cipher_ui_uid" path="res://src/ui/cipher_ui.tscn" id="5_ui"]
+[ext_resource type="Script" path="res://src/gameplay/board_drop_zone.gd" id="6_dropzone"]
 
 [sub_resource type="Environment" id="Environment_glow"]
 background_mode = 3
@@ -55,5 +56,12 @@ position = Vector2(360, 600)
 position = Vector2(360, 300)
 letter = "I"
 cipher_index = 0
+
+[node name="BoardDropZone" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 720.0
+offset_bottom = 1120.0
+script = ExtResource("6_dropzone")
 
 [node name="CipherUI" parent="." instance=ExtResource("5_ui")]

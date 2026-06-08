@@ -18,3 +18,21 @@ func _ready() -> void:
 	if tool_icon and icon_rect:
 		icon_rect.texture = tool_icon
 	self.count = 0
+
+func _get_drag_data(at_position: Vector2) -> Variant:
+	if count <= 0:
+		return null
+		
+	# Create visual preview
+	var preview = TextureRect.new()
+	preview.texture = icon_rect.texture
+	preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	preview.custom_minimum_size = Vector2(64, 64)
+	preview.modulate.a = 0.7
+	
+	var control = Control.new()
+	control.add_child(preview)
+	preview.position = -preview.custom_minimum_size / 2.0
+	set_drag_preview(control)
+	
+	return {"type": "briefcase_item", "tool_type": tool_type, "slot_ref": self}
