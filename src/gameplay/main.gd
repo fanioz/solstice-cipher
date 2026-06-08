@@ -35,6 +35,10 @@ func _ready() -> void:
 		if splitter.has_signal("state_changed"):
 			splitter.state_changed.connect(calculate_light_rays)
 		splitter.tree_exiting.connect(_on_piece_tree_exiting)
+	for filter_node in get_tree().get_nodes_in_group("filters"):
+		if filter_node.has_signal("state_changed"):
+			filter_node.state_changed.connect(calculate_light_rays)
+		filter_node.tree_exiting.connect(_on_piece_tree_exiting)
 			
 	var cipher_ui = get_node_or_null("CipherUI")
 	if cipher_ui:
@@ -50,11 +54,15 @@ func _on_board_drop_zone_item_dropped_on_board(tool_type: String, drop_position:
 	# Decrement count
 	slot_ref.consume_item()
 	
+	const FILTER_SCENE = preload("res://src/gameplay/filter.tscn")
 	var new_piece: Node2D = null
 	if tool_type == "mirror":
 		new_piece = MIRROR_SCENE.instantiate()
 	elif tool_type == "prism":
 		new_piece = SPLITTER_SCENE.instantiate()
+	elif tool_type.begins_with("filter_"):
+		new_piece = FILTER_SCENE.instantiate()
+		new_piece.filter_color = tool_type.trim_prefix("filter_")
 		
 	if new_piece:
 		add_child(new_piece)
@@ -93,6 +101,9 @@ func calculate_light_rays() -> void:
 			is_any_dragging = true
 	for s in get_tree().get_nodes_in_group("splitters"):
 		if s.get("is_dragging") or s.get("is_rotating"):
+			is_any_dragging = true
+	for f in get_tree().get_nodes_in_group("filters"):
+		if f.get("is_moving"):
 			is_any_dragging = true
 			
 	if is_any_dragging:
@@ -167,6 +178,12 @@ func _cast_ray(space_state: PhysicsDirectSpaceState2D, origin: Vector2, directio
 			# Ray 2: Transmitted (passes straight through)
 			var transmitted_origin = end_pos + direction * 1.0
 			_cast_ray(space_state, transmitted_origin, direction, bounces_left - 1, [rid], end_dist, ray_color)
+			
+		elif collider.is_in_group("filters"):
+			# Ray passes straight through but changes color to the filter's color
+			var transmitted_origin = end_pos + direction * 1.0
+			var new_color = collider.filter_color if "filter_color" in collider else ray_color
+			_cast_ray(space_state, transmitted_origin, direction, bounces_left - 1, [rid], end_dist, new_color)
 
 func _process(delta: float) -> void:
 	if animated_dist < INF:
