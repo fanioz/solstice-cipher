@@ -64,4 +64,6 @@ script = ExtResource("6_dropzone")
 
 [node name="CipherUI" parent="." instance=ExtResource("5_ui")]
 
-[node name="BriefcaseUI" parent="." instance=ExtResource("7_briefcase")]
+[node name="BriefcaseCanvas" type="CanvasLayer" parent="."]
+
+[node name="BriefcaseUI" parent="BriefcaseCanvas" instance=ExtResource("7_briefcase")]
