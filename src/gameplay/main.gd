@@ -7,6 +7,7 @@ const MAX_BOUNCES = 15
 const RAY_LENGTH = 3000.0
 const LIGHT_SPEED = 5000.0
 
+@export var initial_inventory: Dictionary = {"mirror": 3}
 @export var next_level_path: String = ""
 
 @onready var sun = $Sun
@@ -16,6 +17,9 @@ var ray_segments: Array[Dictionary] = []
 var animated_dist: float = 0.0
 
 func _ready() -> void:
+    if has_node("BriefcaseUI"):
+        $BriefcaseUI.initialize_inventory(initial_inventory)
+        
     for mirror in get_tree().get_nodes_in_group("mirrors"):
         if mirror.has_signal("state_changed"):
             mirror.state_changed.connect(calculate_light_rays)

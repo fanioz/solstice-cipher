@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://splitter_uid" path="res://src/gameplay/splitter.tscn" id="4_splitter"]
 [ext_resource type="PackedScene" uid="uid://cipher_ui_uid" path="res://src/ui/cipher_ui.tscn" id="5_ui"]
 [ext_resource type="Script" path="res://src/gameplay/board_drop_zone.gd" id="6_dropzone"]
+[ext_resource type="PackedScene" path="res://src/ui/briefcase_ui.tscn" id="7_briefcase"]
 
 [sub_resource type="Environment" id="Environment_glow"]
 background_mode = 3
@@ -49,9 +50,6 @@ position = Vector2(100, 800)
 
 [node name="RayLines" type="Node2D" parent="."]
 
-[node name="Mirror1" parent="." instance=ExtResource("2_mirror")]
-position = Vector2(360, 600)
-
 [node name="Symbol1" parent="." instance=ExtResource("3_symbol")]
 position = Vector2(360, 300)
 letter = "I"
@@ -65,3 +63,5 @@ offset_bottom = 1120.0
 script = ExtResource("6_dropzone")
 
 [node name="CipherUI" parent="." instance=ExtResource("5_ui")]
+
+[node name="BriefcaseUI" parent="." instance=ExtResource("7_briefcase")]
