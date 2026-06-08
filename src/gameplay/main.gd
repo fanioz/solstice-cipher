@@ -24,8 +24,9 @@ var ray_segments: Array[Dictionary] = []
 var animated_dist: float = 0.0
 
 func _ready() -> void:
-	if has_node("BriefcaseUI"):
-		$BriefcaseUI.initialize_inventory(initial_inventory)
+	var briefcase = get_tree().get_first_node_in_group("briefcase_ui")
+	if briefcase:
+		briefcase.initialize_inventory(initial_inventory)
 		
 	for mirror in get_tree().get_nodes_in_group("mirrors"):
 		if mirror.has_signal("state_changed"):
