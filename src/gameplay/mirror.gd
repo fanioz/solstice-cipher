@@ -14,9 +14,9 @@ func _ready() -> void:
 
 func _draw() -> void:
 	# Mobile friendly: Draw a larger 100px rotation ring
-	draw_arc(Vector2.ZERO, 100.0, 0, TAU, 32, Color(1.0, 1.0, 1.0, 0.2), 2.0, true)
-	# Draw an inner ring at 60px to show the "move" zone
-	draw_arc(Vector2.ZERO, 60.0, 0, TAU, 32, Color(1.0, 1.0, 1.0, 0.1), 1.0, true)
+	draw_arc(Vector2.ZERO, 100.0, 0, TAU, 32, Color(1.0, 1.0, 1.0, 0.4), 3.0, true)
+	# Draw an inner ring at 40px to show the "move" zone
+	draw_arc(Vector2.ZERO, 40.0, 0, TAU, 32, Color(1.0, 1.0, 1.0, 0.3), 2.0, true)
 
 func _on_interact_area_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	# Handle Touch & Click equally
@@ -25,8 +25,8 @@ func _on_interact_area_input_event(viewport: Node, event: InputEvent, shape_idx:
 			var local_mouse = get_local_mouse_position()
 			var dist = local_mouse.length()
 			
-			# Mobile friendly: Enlarge inner move radius to 60px
-			if dist < 60.0:
+			# Mobile friendly: Move radius is 40px, outside is rotation
+			if dist < 40.0:
 				is_moving = true
 				move_offset = global_position - get_global_mouse_position()
 			else:
