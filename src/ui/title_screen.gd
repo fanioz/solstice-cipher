@@ -12,6 +12,8 @@ func _ready() -> void:
 		laser2.add_point(Vector2(0, 0))
 		laser2.add_point(Vector2(0, 0))
 		
+	$VBoxContainer/MarginContainer/PlayButton.grab_focus()
+		
 	_start_laser_loop()
 
 func _start_laser_loop() -> void:
