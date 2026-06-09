@@ -19,6 +19,15 @@ func initialize_inventory(inventory: Dictionary) -> void:
 		var slot = SLOT_SCENE.instantiate() as BriefcaseSlot
 		slot.tool_type = tool_type
 		slot.count = inventory[tool_type]
+		
+		# Load the correct texture
+		var tex_path = "res://src/assets/sprites/mirror.jpg"
+		if tool_type == "prism":
+			tex_path = "res://src/assets/sprites/splitter.jpg"
+		
+		if ResourceLoader.exists(tex_path):
+			slot.tool_icon = load(tex_path)
+			
 		container.add_child(slot)
 
 func return_piece(tool_type: String) -> void:

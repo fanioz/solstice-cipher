@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://src/ui/briefcase_ui.gd" id="1_ui"]
 [ext_resource type="PackedScene" path="res://src/ui/briefcase_slot.tscn" id="2_slot"]
 
-[node name="BriefcaseUI" type="Control"]
+[node name="BriefcaseUI" type="Control" groups=["briefcase_ui"]]
 custom_minimum_size = Vector2(0, 160)
 layout_mode = 3
 anchors_preset = 12
