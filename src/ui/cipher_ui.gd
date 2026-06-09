@@ -19,6 +19,9 @@ func _ready() -> void:
 	call_deferred("setup_ui")
 
 func setup_ui() -> void:
+	if not is_inside_tree():
+		return
+		
 	var symbols = get_tree().get_nodes_in_group("symbols")
 	
 	# Sort symbols by their cipher index to ensure the word is spelled left-to-right

@@ -87,6 +87,9 @@ func _on_piece_tree_exiting() -> void:
 	call_deferred("calculate_light_rays")
 
 func calculate_light_rays() -> void:
+	if not is_inside_tree():
+		return
+		
 	for symbol in get_tree().get_nodes_in_group("symbols"):
 		if symbol.has_method("set_illuminated"):
 			symbol.set_illuminated(false)
