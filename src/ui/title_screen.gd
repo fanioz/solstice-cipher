@@ -51,3 +51,12 @@ func _start_laser_loop() -> void:
 
 func _on_play_button_pressed() -> void:
 	TransitionManager.transition_to("res://src/gameplay/main.tscn")
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		print("DEBUG: Mouse clicked at ", event.position)
+		var btn = $VBoxContainer/MarginContainer/PlayButton
+		if btn.get_global_rect().has_point(event.position):
+			print("DEBUG: Click was inside the Begin Journey button's rect!")
+			# Force transition just in case the button is truly broken
+			_on_play_button_pressed()
