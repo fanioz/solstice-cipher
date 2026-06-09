@@ -70,6 +70,7 @@ letter = "N"
 cipher_index = 2
 
 [node name="BoardDropZone" type="Control" parent="."]
+mouse_filter = 1
 layout_mode = 3
 anchors_preset = 0
 offset_right = 720.0
