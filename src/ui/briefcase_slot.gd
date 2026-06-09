@@ -17,7 +17,10 @@ var count: int = 0:
 func _ready() -> void:
 	if tool_icon and icon_rect:
 		icon_rect.texture = tool_icon
-	# Do not overwrite count, it is set before _ready by BriefcaseUI
+	# Sync UI state with the current count (which was set before _ready)
+	if count_label:
+		count_label.text = "x" + str(count)
+	modulate.a = 1.0 if count > 0 else 0.5
 
 func consume_item() -> void:
 	if count > 0:
