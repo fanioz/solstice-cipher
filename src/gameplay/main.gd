@@ -14,7 +14,7 @@ const COLOR_MAP = {
 	"blue": Color(0.2, 0.5, 2.5, 0.8)
 }
 
-@export var initial_inventory: Dictionary = {"mirror": 3}
+@export var initial_inventory: Dictionary = {"mirror": 1}
 @export var next_level_path: String = ""
 
 @onready var sun = $Sun
