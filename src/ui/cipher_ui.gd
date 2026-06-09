@@ -6,8 +6,15 @@ signal cipher_solved
 
 var slots: Array = []
 var _is_solved: bool = false
+var win_timer: Timer
 
 func _ready() -> void:
+	win_timer = Timer.new()
+	win_timer.wait_time = 1.0
+	win_timer.one_shot = true
+	win_timer.timeout.connect(_on_win_timer_timeout)
+	add_child(win_timer)
+	
 	# Wait a frame so all symbols are ready and in the tree
 	call_deferred("setup_ui")
 
@@ -48,9 +55,21 @@ func check_win_condition() -> void:
 	if _is_solved:
 		return
 		
+	var all_solved = true
 	for label in slots:
 		if label.text == "_":
-			return
+			all_solved = false
+			break
 			
+	if all_solved:
+		if win_timer.is_stopped():
+			win_timer.start()
+	else:
+		if not win_timer.is_stopped():
+			win_timer.stop()
+
+func _on_win_timer_timeout() -> void:
+	if _is_solved:
+		return
 	_is_solved = true
 	cipher_solved.emit()
