@@ -32,9 +32,22 @@
 - Story: production/epics/puzzle-solver/story-001-float-quantization.md — Story 001: Float Quantization
 - Tech debt logged: None
 - Next recommended: production/epics/puzzle-solver/story-002-optical-radial-a-star.md — Story 002: Radial A* Solver
+
+## Session Extract — /story-done 2026-06-12 (2)
+- Verdict: COMPLETE
+- Story: production/epics/puzzle-solver/story-002-optical-radial-astar.md — Story 002: Custom Optical Radial A* Solver
+- Tech debt logged: None
+- Next recommended: production/epics/beam-mechanics/story-005-diagonal-routing.md — Story 005: Diagonal Routing
+
 ## Session Extract — /dev-story 2026-06-11
 - Story: production/epics/puzzle-solver/story-001-float-quantization.md — Story 001: Float Quantization & Geometric Data Structures
 - Files changed: src/puzzle_solver/optical_radial_astar.gd
 - Test written: tests/unit/puzzle_solver/story_001_quantization_test.gd
 - Blockers: None
 - Next: /code-review tests/unit/puzzle_solver/story_001_quantization_test.gd src/puzzle_solver/optical_radial_astar.gd then /story-done production/epics/puzzle-solver/story-001-float-quantization.md
+## Session Extract — /dev-story 2026-06-12
+- Story: production/epics/puzzle-solver/story-002-optical-radial-astar.md — Story 002: Custom Optical Radial A* Solver
+- Files changed: src/puzzle_solver/optical_radial_astar.gd
+- Test written: tests/unit/puzzle_solver/story_002_optical_radial_astar_test.gd
+- Blockers: None
+- Next: /code-review tests/unit/puzzle_solver/story_002_optical_radial_astar_test.gd src/puzzle_solver/optical_radial_astar.gd then /story-done production/epics/puzzle-solver/story-002-optical-radial-astar.md
