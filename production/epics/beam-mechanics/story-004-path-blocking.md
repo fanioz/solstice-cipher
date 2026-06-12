@@ -1,13 +1,13 @@
 # Story 004: Path Blocking (Shades)
 
 > **Epic**: beam-mechanics
-> **Status**: Ready
+> **Status**: Complete
 > **Layer**: Foundation
 > **Type**: Logic
 > **Estimate**: 0.5
 > **Performance Budget**: < 2ms per bending logic iteration (Core layer requirement)
 > **Manifest Version**: 2026-06-09
-> **Last Updated**: 
+> **Last Updated**: 2026-06-12
 
 ## Context
 
@@ -87,7 +87,7 @@
 **Required evidence**:
 - Logic: `tests/unit/beam_mechanics/story_004_path_blocking_test.gd` — must exist and pass
 
-**Status**: [ ] Not yet created
+**Status**: [x] COVERED
 
 ---
 

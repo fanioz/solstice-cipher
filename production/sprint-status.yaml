@@ -66,8 +66,8 @@ stories:
     name: "beam-mechanics 004: Path Blocking"
     file: "production/epics/beam-mechanics/story-004-path-blocking.md"
     priority: should-have
-    status: backlog
+    status: done
     owner: ""
     estimate_days: 0.5
     blocker: ""
-    completed: ""
+    completed: "2026-06-12"
