@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://splitter_uid" path="res://src/gameplay/splitter.tscn" id="4_splitter"]
 [ext_resource type="PackedScene" uid="uid://cipher_ui_uid" path="res://src/ui/cipher_ui.tscn" id="5_ui"]
 [ext_resource type="Script" path="res://src/gameplay/board_drop_zone.gd" id="6_dropzone"]
+[ext_resource type="Script" path="res://src/ui/tutorial_ui.gd" id="7_tutorial"]
 [ext_resource type="PackedScene" path="res://src/ui/briefcase_ui.tscn" id="7_briefcase"]
 
 [sub_resource type="Environment" id="Environment_glow"]
@@ -64,12 +65,13 @@ offset_bottom = 1120.0
 script = ExtResource("6_dropzone")
 
 [node name="TutorialUI" type="CanvasLayer" parent="."]
+script = ExtResource("7_tutorial")
 
 [node name="Instruction1" type="Label" parent="TutorialUI"]
 offset_left = 60.0
-offset_top = 500.0
+offset_top = 1040.0
 offset_right = 660.0
-offset_bottom = 580.0
+offset_bottom = 1100.0
 theme_override_colors/font_color = Color(0, 1, 1, 1)
 theme_override_font_sizes/font_size = 24
 text = "Drag a MIRROR from your briefcase to redirect the light beam."
