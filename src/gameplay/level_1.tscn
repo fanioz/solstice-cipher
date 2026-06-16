@@ -89,6 +89,18 @@ text = "Hit the symbol 'I' with the beam to solve the cipher."
 horizontal_alignment = 1
 autowrap_mode = 2
 
+[node name="Instruction3" type="Label" parent="TutorialUI"]
+visible = false
+offset_left = 60.0
+offset_top = 400.0
+offset_right = 660.0
+offset_bottom = 460.0
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 24
+text = "Drag the outer ring of the mirror to rotate it."
+horizontal_alignment = 1
+autowrap_mode = 2
+
 [node name="CipherUI" parent="." instance=ExtResource("5_ui")]
 
 [node name="BriefcaseCanvas" type="CanvasLayer" parent="."]
