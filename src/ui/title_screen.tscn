@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://title_screen"]
 
 [ext_resource type="Script" path="res://src/ui/title_screen.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://src/assets/sprites/splitter.jpg" id="2_texture"]
+[ext_resource type="Texture2D" path="res://src/assets/sprites/prism.webp" id="2_texture"]
 
 [sub_resource type="Environment" id="Environment_glow"]
 background_mode = 3
@@ -111,11 +111,22 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_constants/margin_top = 80
 
-[node name="PlayButton" type="Button" parent="VBoxContainer/MarginContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="PlayButton" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer2"]
 custom_minimum_size = Vector2(250, 60)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 32
 text = "Begin Journey"
 
-[connection signal="pressed" from="VBoxContainer/MarginContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[node name="OptionsButton" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(250, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 32
+text = "Options"
+
+[connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer2/PlayButton" to="." method="_on_play_button_pressed"]

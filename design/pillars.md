@@ -5,11 +5,11 @@ These pillars guide every creative and design decision in Solstice Cipher. If a 
 ## 1. Light is the Absolute Mechanic
 Every puzzle, interaction, and solution must fundamentally revolve around manipulating light rays or casting shadows. There are no switches, pressure plates, or triggers that do not involve light.
 
-## 2. The "Aha!" Mechanism
-The game must prioritize immediate, highly satisfying audiovisual feedback the exact moment a spatial logic puzzle is solved. The alignment of light should feel tactile, magical, and instantly rewarding.
+## 2. Algorithmic Infinite Replayability
+The game relies on a robust procedural generation system to ensure infinite solvable puzzles. High volume and variety of puzzles are key to the experience, guaranteeing the player always has a new cipher to solve.
 
 ## 3. Mechanical Escalation
-The difficulty curve relies on combining known optical properties (reflection, refraction, splitting, color filtering) in novel and complex ways, rather than introducing obscure logic leaps or hidden rules.
+The difficulty curve relies on unlocking new tools (Mirrors, Prisms, Filters, Portals, etc.) and combining them to route light to solve longer word ciphers.
 
 ## 4. Intuitive Predictability
-The behavior of light must remain predictable, consistent, and instantly readable. Difficulty must arise strictly from the spatial configuration of the room and the complexity of the optic networks, never from unpredictable physics or fighting the controls.
+The behavior of light must remain predictable, consistent, and instantly readable. Difficulty must arise strictly from the spatial configuration and piece budget, never from unpredictable physics or fighting the controls.

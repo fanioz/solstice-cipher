@@ -19,8 +19,7 @@ glow_hdr_threshold = 0.8
 [node name="Level2" type="Node2D"]
 script = ExtResource("1_script")
 initial_inventory = {
-"mirror": 1,
-"prism": 2
+"mirror": 1
 }
 next_level_path = "res://src/gameplay/level_3.tscn"
 
@@ -55,14 +54,9 @@ position = Vector2(100, 900)
 [node name="RayLines" type="Node2D" parent="."]
 
 [node name="Symbol1" parent="." instance=ExtResource("3_symbol")]
-position = Vector2(600, 900)
-letter = "O"
+position = Vector2(600, 600)
+letter = "S"
 cipher_index = 0
-
-[node name="Symbol2" parent="." instance=ExtResource("3_symbol")]
-position = Vector2(100, 600)
-letter = "N"
-cipher_index = 1
 
 [node name="BoardDropZone" type="Control" parent="."]
 mouse_filter = 1
@@ -74,4 +68,6 @@ script = ExtResource("6_dropzone")
 
 [node name="CipherUI" parent="." instance=ExtResource("5_ui")]
 
-[node name="BriefcaseUI" parent="." instance=ExtResource("7_briefcase")]
+[node name="BriefcaseCanvas" type="CanvasLayer" parent="."]
+
+[node name="BriefcaseUI" parent="BriefcaseCanvas" instance=ExtResource("7_briefcase")]

@@ -21,9 +21,10 @@ func initialize_inventory(inventory: Dictionary) -> void:
 		slot.count = inventory[tool_type]
 		
 		# Load the correct texture
-		var tex_path = "res://src/assets/sprites/mirror.jpg"
-		if tool_type == "prism":
-			tex_path = "res://src/assets/sprites/splitter.jpg"
+		var tex_name = tool_type
+		if tool_type.begins_with("filter_"):
+			tex_name = "filter"
+		var tex_path = "res://src/assets/sprites/" + tex_name + ".webp"
 		
 		if ResourceLoader.exists(tex_path):
 			slot.tool_icon = load(tex_path)

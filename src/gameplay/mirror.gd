@@ -1,4 +1,4 @@
-extends Area2D
+class_name Mirror extends Area2D
 
 signal state_changed
 
@@ -7,10 +7,12 @@ var is_rotating: bool = false
 var move_offset: Vector2 = Vector2.ZERO
 var initial_angle: float = 0.0
 
-@onready var interact_area = $InteractArea
+@onready var interact_area = get_node_or_null("InteractArea")
 
 func _ready() -> void:
-	interact_area.input_event.connect(_on_interact_area_input_event)
+	add_to_group("mirrors")
+	if interact_area:
+		interact_area.input_event.connect(_on_interact_area_input_event)
 
 func _draw() -> void:
 	# Mobile friendly: Draw a larger 100px rotation ring
@@ -76,3 +78,26 @@ func _input(event: InputEvent) -> void:
 
 func get_normal() -> Vector2:
 	return Vector2.UP.rotated(rotation).normalized()
+
+## Process the incoming light ray in 2D space.
+## Returns an array containing the reflected ray, or empty array if blocked.
+func process_beam(incoming_origin: Vector2, incoming_dir: Vector2, incoming_color: Color) -> Array[Dictionary]:
+	var global_normal := get_normal()
+	
+	# Validate front-face hit: dot product must be <= -0.01 (beams from behind are blocked)
+	if incoming_dir.dot(global_normal) > -0.01:
+		return []
+		
+	var reflected_dir := incoming_dir.bounce(global_normal).snapped(Vector2(0.001, 0.001)).normalized()
+	
+	return [{
+		"origin": incoming_origin,
+		"direction": reflected_dir,
+		"color": incoming_color
+	}]
+
+## Helper method for tests to snap/rotate the mirror's Y rotation
+func rotate_mirror_by(angle_radians: float) -> void:
+	rotation += angle_radians
+	rotation = round(rotation / (PI / 12.0)) * (PI / 12.0) # Snap to 15 degrees
+	state_changed.emit()

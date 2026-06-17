@@ -3,6 +3,9 @@ extends Control
 @onready var laser1 = $LaserBeam1
 @onready var laser2 = $LaserBeam2
 
+var options_menu_scene = preload("res://src/ui/options_menu.tscn")
+var options_menu_instance = null
+
 func _ready() -> void:
 	# Ensure they start with 2 points so we can modify index 1
 	if laser1.get_point_count() < 2:
@@ -12,7 +15,25 @@ func _ready() -> void:
 		laser2.add_point(Vector2(0, 0))
 		laser2.add_point(Vector2(0, 0))
 		
-	$VBoxContainer/MarginContainer/PlayButton.grab_focus()
+	if has_node("/root/AudioManager"):
+		get_node("/root/AudioManager").play_bgm("bgm_ambient")
+		
+	var btn = $VBoxContainer/MarginContainer/VBoxContainer2/PlayButton
+	btn.grab_focus()
+	btn.mouse_entered.connect(func():
+		if has_node("/root/AudioManager"):
+			get_node("/root/AudioManager").play_sfx("ui_hover")
+	)
+		
+	options_menu_instance = options_menu_scene.instantiate()
+	add_child(options_menu_instance)
+	
+	var opt_btn = $VBoxContainer/MarginContainer/VBoxContainer2/OptionsButton
+	opt_btn.pressed.connect(_on_options_button_pressed)
+	opt_btn.mouse_entered.connect(func():
+		if has_node("/root/AudioManager"):
+			get_node("/root/AudioManager").play_sfx("ui_hover")
+	)
 		
 	_start_laser_loop()
 
@@ -52,13 +73,14 @@ func _start_laser_loop() -> void:
 		await get_tree().create_timer(1.0).timeout
 
 func _on_play_button_pressed() -> void:
-	TransitionManager.transition_to("res://src/gameplay/main.tscn")
+	if has_node("/root/AudioManager"):
+		get_node("/root/AudioManager").play_sfx("ui_click")
+	TransitionManager.transition_to("res://src/ui/level_select.tscn")
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		print("DEBUG: Mouse clicked at ", event.position)
-		var btn = $VBoxContainer/MarginContainer/PlayButton
-		if btn.get_global_rect().has_point(event.position):
-			print("DEBUG: Click was inside the Begin Journey button's rect!")
-			# Force transition just in case the button is truly broken
-			_on_play_button_pressed()
+func _on_options_button_pressed() -> void:
+	if has_node("/root/AudioManager"):
+		get_node("/root/AudioManager").play_sfx("ui_click")
+	if options_menu_instance:
+		options_menu_instance.open()
+
+

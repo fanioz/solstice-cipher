@@ -187,11 +187,9 @@ Building this game taught me several unexpected lessons:
 
 ## Play the Game
 
-You can play Solstice Cipher right in your browser—no downloads required. The complete game is hosted at:
+You can play Solstice Cipher right here—no downloads required.
 
-**[Play Solstice Cipher now](https://fanioz.github.io/solstice-cipher/)** - No downloads required, runs in your browser
-
-Or copy the code and run it locally—everything's in a single HTML file.
+{% embed https://fanioz.github.io/solstice-cipher/ }
 
 **[Get the source code](https://github.com/fanioz/solstice-cipher)** - Available under MIT license
 

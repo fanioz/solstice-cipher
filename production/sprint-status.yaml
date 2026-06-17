@@ -9,65 +9,65 @@
 #   done           ↔  Complete
 #   blocked        ↔  Blocked
 
-sprint: 1
-goal: "Establish the foundational gameplay systems by implementing the core optical beam propagation mechanics and the fundamental puzzle solving algorithm, allowing light to interact with simple mirrors and prisms."
-start: "2026-06-10"
-end: "2026-06-24"
-generated: "2026-06-10"
+sprint: 2
+goal: "Implement advanced optical interactions (color filtration, portals, combiners) and integrate off-grid procedural boundaries with the solver."
+start: "2026-06-13"
+end: "2026-06-27"
+generated: "2026-06-12"
 updated: "2026-06-12"
 
 stories:
-  - id: "1-1"
-    name: "beam-mechanics 001: Core Propagation"
-    file: "production/epics/beam-mechanics/story-001-core-propagation.md"
+  - id: "2-1"
+    name: "beam-mechanics 003: Color Filtration"
+    file: "production/epics/beam-mechanics/story-003-color-filtration.md"
+    priority: must-have
+    status: done
+    owner: ""
+    estimate_days: 1.0
+    blocker: ""
+    completed: "2026-06-12"
+  - id: "2-2"
+    name: "beam-mechanics 006: Spatial Teleportation"
+    file: "production/epics/beam-mechanics/story-006-spatial-teleportation.md"
     priority: must-have
     status: done
     owner: ""
     estimate_days: 1.5
     blocker: ""
-    completed: "2026-06-11"
-  - id: "1-2"
-    name: "beam-mechanics 002: Beam Splitting"
-    file: "production/epics/beam-mechanics/story-002-beam-splitting.md"
+    completed: "2026-06-12"
+  - id: "2-3"
+    name: "beam-mechanics 007: Multi-source Convergence"
+    file: "production/epics/beam-mechanics/story-007-multi-source-convergence.md"
     priority: must-have
     status: done
     owner: ""
-    estimate_days: 1.0
-    blocker: ""
-    completed: "2026-06-11"
-  - id: "1-3"
-    name: "puzzle-solver 001: Float Quantization"
-    file: "production/epics/puzzle-solver/story-001-float-quantization.md"
-    priority: must-have
-    status: done
-    owner: ""
-    estimate_days: 1.0
+    estimate_days: 2.0
     blocker: ""
     completed: "2026-06-12"
-  - id: "1-4"
-    name: "puzzle-solver 002: Radial A* Solver"
-    file: "production/epics/puzzle-solver/story-002-optical-radial-astar.md"
+  - id: "2-4"
+    name: "puzzle-solver 003: Off-Grid Wall Generation"
+    file: "production/epics/puzzle-solver/story-003-off-grid-walls.md"
     priority: must-have
     status: done
     owner: ""
-    estimate_days: 2.5
+    estimate_days: 1.5
     blocker: ""
     completed: "2026-06-12"
-  - id: "1-5"
-    name: "beam-mechanics 005: Diagonal Routing"
-    file: "production/epics/beam-mechanics/story-005-diagonal-routing.md"
+  - id: "2-5"
+    name: "procedural-generation 001: Level Scaffolding"
+    file: "production/epics/procedural-generation/story-001-level-scaffolding.md"
     priority: should-have
     status: done
     owner: ""
     estimate_days: 1.0
     blocker: ""
     completed: "2026-06-12"
-  - id: "1-6"
-    name: "beam-mechanics 004: Path Blocking"
-    file: "production/epics/beam-mechanics/story-004-path-blocking.md"
+  - id: "2-6"
+    name: "procedural-generation 002: Backwards Solver"
+    file: "production/epics/procedural-generation/story-002-backwards-solver.md"
     priority: should-have
     status: done
     owner: ""
-    estimate_days: 0.5
+    estimate_days: 2.0
     blocker: ""
     completed: "2026-06-12"

@@ -22,12 +22,19 @@ config/features=PackedStringArray("4.6", "GL Compatibility")
 [autoload]
 
 TransitionManager="*res://src/ui/transition_manager.tscn"
+SaveManager="*res://src/autoload/save_manager.gd"
+AudioManager="*res://src/autoload/audio_manager.gd"
 
 [display]
 
 window/size/viewport_width=720
 window/size/viewport_height=1280
 window/stretch/mode="canvas_items"
+window/handheld/orientation=1
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gut/plugin.cfg")
 
 [rendering]
 

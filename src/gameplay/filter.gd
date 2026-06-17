@@ -1,16 +1,17 @@
-extends Area2D
+class_name Filter extends Area2D
 
 signal state_changed
 
-@export_enum("red", "green", "blue") var filter_color: String = "red"
+@export var filter_color = "red"
 
 var is_moving: bool = false
 var move_offset: Vector2 = Vector2.ZERO
 
-@onready var sprite = $Sprite2D
+@onready var sprite = get_node_or_null("Sprite2D")
 
 func _ready() -> void:
 	input_event.connect(_on_input_event)
+	add_to_group("filters")
 	
 	var color_map = {
 		"red": Color(1.0, 0.2, 0.2, 0.5),
@@ -19,6 +20,28 @@ func _ready() -> void:
 	}
 	if sprite:
 		sprite.modulate = color_map.get(filter_color, Color.WHITE)
+
+## Process the incoming light ray in 2D space.
+## Returns the beam passing straight through, tinted to the filter's color.
+func process_beam(incoming_origin: Vector2, incoming_dir: Vector2, incoming_color: Color) -> Array[Dictionary]:
+	var result_color := incoming_color
+	
+	if typeof(filter_color) == TYPE_COLOR:
+		result_color = filter_color
+	elif filter_color is String:
+		var string_colors = {
+			"red": Color.RED,
+			"green": Color.GREEN,
+			"blue": Color.BLUE,
+			"white": Color.WHITE
+		}
+		result_color = string_colors.get(filter_color.to_lower(), incoming_color)
+		
+	return [{
+		"origin": incoming_origin,
+		"direction": incoming_dir,
+		"color": result_color
+	}]
 
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
