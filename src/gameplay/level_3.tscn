@@ -19,10 +19,9 @@ glow_hdr_threshold = 0.8
 [node name="Level3" type="Node2D"]
 script = ExtResource("1_script")
 initial_inventory = {
-"mirror": 2,
-"prism": 3
+"mirror": 1
 }
-next_level_path = "res://src/ui/end_screen.tscn"
+next_level_path = "res://src/gameplay/level_4.tscn"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_glow")
@@ -55,19 +54,9 @@ position = Vector2(100, 800)
 [node name="RayLines" type="Node2D" parent="."]
 
 [node name="Symbol1" parent="." instance=ExtResource("3_symbol")]
-position = Vector2(620, 800)
-letter = "S"
+position = Vector2(620, 500)
+letter = "R"
 cipher_index = 0
-
-[node name="Symbol2" parent="." instance=ExtResource("3_symbol")]
-position = Vector2(100, 450)
-letter = "U"
-cipher_index = 1
-
-[node name="Symbol3" parent="." instance=ExtResource("3_symbol")]
-position = Vector2(360, 300)
-letter = "N"
-cipher_index = 2
 
 [node name="BoardDropZone" type="Control" parent="."]
 mouse_filter = 1
@@ -79,4 +68,6 @@ script = ExtResource("6_dropzone")
 
 [node name="CipherUI" parent="." instance=ExtResource("5_ui")]
 
-[node name="BriefcaseUI" parent="." instance=ExtResource("7_briefcase")]
+[node name="BriefcaseCanvas" type="CanvasLayer" parent="."]
+
+[node name="BriefcaseUI" parent="BriefcaseCanvas" instance=ExtResource("7_briefcase")]

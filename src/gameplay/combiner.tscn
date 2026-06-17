@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://combiner_uid"]
+
+[ext_resource type="Script" path="res://src/gameplay/combiner.gd" id="1_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(80, 60)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_interact"]
+radius = 100.0
+
+[node name="Combiner" type="Area2D" groups=["combiners"]]
+collision_layer = 1
+collision_mask = 1
+script = ExtResource("1_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1")
+
+[node name="InteractArea" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+shape = SubResource("CircleShape2D_interact")

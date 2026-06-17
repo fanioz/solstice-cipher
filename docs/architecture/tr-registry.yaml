@@ -25,32 +25,53 @@
 # STATUS VALUES: active | deprecated | superseded-by: TR-[system]-NNN
 
 version: 1
-last_updated: ""
+last_updated: "2026-06-09"
 
-requirements: []
+requirements:
+  - id: TR-level-001
+    system: level_progression
+    gdd: design/specs/2026-06-08-level-progression-design.md
+    requirement: "100 levels across 10 tiers (1-15 hand-crafted .tscn, 16-100 procedural)."
+    created: 2026-06-09
+    revised: ""
+    status: active
 
-# --- EXAMPLE ENTRIES (remove when first real entries are added) ---
-#
-# - id: TR-combat-001
-#   system: combat
-#   gdd: design/gdd/combat-system.md
-#   requirement: "Player takes damage from enemies based on attack power minus defence"
-#   created: 2026-03-10
-#   revised: ""
-#   status: active
-#
-# - id: TR-combat-002
-#   system: combat
-#   gdd: design/gdd/combat-system.md
-#   requirement: "Combo window timing is 0.4 seconds between hits"
-#   created: 2026-03-10
-#   revised: "2026-04-01"
-#   status: active
-#
-# - id: TR-combat-003
-#   system: combat
-#   gdd: design/gdd/combat-system.md
-#   requirement: "Old damage formula using raw stats"
-#   created: 2026-03-10
-#   revised: ""
-#   status: superseded-by: TR-combat-001
+  - id: TR-level-002
+    system: level_progression
+    gdd: design/specs/2026-06-08-level-progression-design.md
+    requirement: "Procedural algorithm must solve backward from Glyphs to Source."
+    created: 2026-06-09
+    revised: ""
+    status: active
+
+  - id: TR-level-003
+    system: level_progression
+    gdd: design/specs/2026-06-08-level-progression-design.md
+    requirement: "Tools (Mirrors, Prisms, Filters, etc.) modify beam paths and colors."
+    created: 2026-06-09
+    revised: ""
+    status: active
+
+  - id: TR-level-004
+    system: level_progression
+    gdd: design/specs/2026-06-08-level-progression-design.md
+    requirement: "Combiner requires two simultaneous input beams to emit one output."
+    created: 2026-06-09
+    revised: ""
+    status: active
+
+  - id: TR-level-005
+    system: level_progression
+    gdd: design/specs/2026-06-08-level-progression-design.md
+    requirement: "Briefcase UI bottom 160px panel with drag-to-place tool inventory."
+    created: 2026-06-09
+    revised: ""
+    status: active
+
+  - id: TR-level-006
+    system: level_progression
+    gdd: design/specs/2026-06-08-level-progression-design.md
+    requirement: "Persistence of level unlocks and available tool progression."
+    created: 2026-06-09
+    revised: ""
+    status: active

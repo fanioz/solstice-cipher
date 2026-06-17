@@ -75,3 +75,33 @@
 - Test written: tests/unit/beam_mechanics/story_004_path_blocking_test.gd
 - Blockers: None
 - Next: /code-review tests/unit/beam_mechanics/story_004_path_blocking_test.gd src/beam_mechanics/shade.gd then /story-done production/epics/beam-mechanics/story-004-path-blocking.md
+## Session Extract — /sprint-plan 2026-06-12 (5)
+- Sprint 2 plan generated and saved to `production/sprints/sprint-2.md`.
+- Sprint 2 status initialized in `production/sprint-status.yaml`.
+- Producer gate PR-SPRINT: REALISTIC.
+- Missing QA Plan identified.
+- Next recommended: /qa-plan sprint
+<!-- QA-PLAN: 2026-06-12 | System: Sprint 2 | Plan written: production/qa/qa-plan-sprint-2-2026-06-12.md -->
+
+## Session Extract — /goal 2026-06-12 (Sprint 2 Complete)
+- Verdict: PASS
+- Sprint: Sprint 2
+- Stories completed: 2-1 through 2-6 (Color Filtration, Spatial Teleportation, Multi-source Convergence, Off-Grid Wall Generation, Level Scaffolding, Backwards Solver)
+- Files changed: Updated story markdown files, sprint-status.yaml, stage.txt, and qa reports
+- Verification: 48/48 unit tests passing, main scene loads without compile or runtime crashes
+- Next recommended: Begin Sprint 3 (UI, Save/Load, and Progression systems)
+
+## Session Extract — /team-qa 2026-06-15 (v1.0.2 QA Sign-Off)
+- Verdict: COMPLETE (APPROVED)
+- Scope: Version 1.0.2
+- Verification: 48/48 unit tests passing, zero open S1/S2/S3 bugs in production/qa/bugs/.
+- Report written: production/qa/qa-signoff-v1.0.2-2026-06-15.md
+<!-- QA RUN: 2026-06-15 | Sprint: ad-hoc | Verdict: PASS | Report: production/qa/qa-signoff-v1.0.2-2026-06-15.md -->
+
+## Session Extract — Step 5: QA Planning 2026-06-16
+- Task: QA Planning for the 'Procedural Campaign Region' (Levels 16-100)
+- Deliverable: QA Test Plan and Playtest Checklist
+- Status: Plan written to `production/qa/qa-plan-procedural-campaign.md`
+- Next recommended: Review the QA plan and execute unit/integration test suites
+<!-- QA-PLAN: 2026-06-16 | System: Procedural Campaign Region (Levels 16-100) | Plan written: production/qa/qa-plan-procedural-campaign.md -->
+

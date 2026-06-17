@@ -71,7 +71,19 @@ state_ownership: []
 #
 # pattern options: signal | direct_call | event_bus | shared_resource | rpc | none
 
-interfaces: []
+interfaces:
+  - contract: procedural_generation_complete
+    status: active
+    pattern: signal
+    producer: procedural-puzzle-generator
+    consumers:
+      - level-manager
+    adr: docs/architecture/adr-0004-procedural-generation-system.md
+    signal_signature: "generation_complete(puzzle_nodes: Array[Node])"
+    referenced_by:
+      - docs/architecture/adr-0004-procedural-generation-system.md
+    added: 2026-06-10
+    revised: ""
 
 # Example:
 #
@@ -131,7 +143,127 @@ performance_budgets: []
 # Register an API decision when the choice is non-obvious and other ADRs might
 # make a different choice for the same purpose without knowing this was decided.
 
-api_decisions: []
+api_decisions:
+  - purpose: primary_language
+    status: active
+    api: GDScript
+    not: C#
+    adr: docs/architecture/adr-0001-core-gameplay-logic.md
+    reason: "Project is already in GDScript, offers fastest iteration, and better compatibility with web exports."
+    referenced_by:
+      - docs/architecture/adr-0001-core-gameplay-logic.md
+    added: 2026-06-09
+    revised: ""
+  - purpose: rendering_backend
+    status: active
+    api: Compatibility (OpenGL 3.3/WebGL 2)
+    not: Forward+, Mobile
+    adr: docs/architecture/adr-0002-rendering-engine.md
+    reason: "Must support HTML5 web exports."
+    referenced_by:
+      - docs/architecture/adr-0002-rendering-engine.md
+    added: 2026-06-09
+    revised: ""
+  - purpose: input_handling
+    status: active
+    api: Custom InputManager Autoload
+    not: Input singleton (Input.is_action_pressed)
+    adr: docs/architecture/adr-0003-input-handling.md
+    reason: "Centralizes input for buffering, combo detection, and dual-focus UI separation."
+    referenced_by:
+      - docs/architecture/adr-0003-input-handling.md
+    added: 2026-06-09
+    revised: ""
+  - purpose: procedural_generation_threading
+    status: active
+    api: coroutines (await get_tree().process_frame)
+    not: WorkerThreadPool
+    adr: docs/architecture/adr-0004-procedural-generation-system.md
+    reason: "WorkerThreadPool risks breaking HTML5/Web export compatibility due to SharedArrayBuffer restrictions."
+    referenced_by:
+      - docs/architecture/adr-0004-procedural-generation-system.md
+    added: 2026-06-10
+    revised: ""
+  - purpose: 3d_grid_static_elements
+    status: 'superseded_by: ADR-0005'
+    api: GridMap
+    not: TileMapLayer, individual nodes
+    adr: docs/architecture/adr-0004-procedural-generation-system.md
+    reason: "GridMap provides internal batching optimizations for 3D static elements, which is critical when individual interactive elements must be spawned as Node3Ds."
+    referenced_by:
+      - docs/architecture/adr-0004-procedural-generation-system.md
+    added: 2026-06-10
+    revised: 2026-06-10
+  - purpose: 3d_static_elements
+    status: active
+    api: modular Node3D/CSG components
+    not: GridMap or TileMapLayer
+    adr: docs/architecture/adr-0005-puzzle-solver-algorithm.md
+    reason: "GridMap cannot physically support 15-degree off-grid ray intersections. Static walls must be built dynamically around the mathematical ray paths."
+    referenced_by:
+      - docs/architecture/adr-0005-puzzle-solver-algorithm.md
+    added: 2026-06-10
+    revised: ""
+  - purpose: procedural_pathfinding
+    status: active
+    api: Pure GDScript custom A*
+    not: Native AStar3D with GDScript overrides
+    adr: docs/architecture/adr-0005-puzzle-solver-algorithm.md
+    reason: "Overriding AStar3D heuristic methods in GDScript causes massive cross-language context-switching overhead per edge evaluation."
+    referenced_by:
+      - docs/architecture/adr-0005-puzzle-solver-algorithm.md
+    added: 2026-06-10
+    revised: ""
+  - purpose: runtime_beam_propagation
+    status: active
+    api: PhysicsDirectSpaceState3D Raycasting (Jolt)
+    not: Abstract Graph Traversal
+    adr: docs/architecture/adr-0006-beam-propagation-system.md
+    reason: "Abstract traversal cannot resolve endpoints when beams are rotated away from the mathematical path into procedural walls."
+    referenced_by:
+      - docs/architecture/adr-0006-beam-propagation-system.md
+    added: 2026-06-10
+    revised: ""
+  - purpose: beam_convergence
+    status: active
+    api: Node-based Additive Color Blending
+    not: Spatial Interference (Free-space blending)
+    adr: docs/architecture/adr-0007-beam-convergence.md
+    reason: "Node-based blending resolves paths deterministically via physics endpoints, while free-space blending requires complex volumetric intersections."
+    referenced_by:
+      - docs/architecture/adr-0007-beam-convergence.md
+    added: 2026-06-10
+    revised: ""
+  - purpose: beam_color_math
+    status: active
+    api: HDR values (>1.0)
+    not: Clamped to 1.0
+    adr: docs/architecture/adr-0007-beam-convergence.md
+    reason: "Godot 4.6 evaluates glow before tonemapping. HDR values properly trigger the bloom threshold while the tonemapper compresses it to screen space."
+    referenced_by:
+      - docs/architecture/adr-0007-beam-convergence.md
+    added: 2026-06-10
+    revised: ""
+  - purpose: drag_and_drop
+    status: active
+    api: Decoupled Physics-based 3D Proxy Dragging
+    not: Native Control Drag-and-Drop
+    adr: docs/architecture/adr-0008-briefcase-ui.md
+    reason: "Native Control drag cannot cross the 2D-to-3D space boundary effectively. Physics proxy provides tactile, mechanically robust 3D placement."
+    referenced_by:
+      - docs/architecture/adr-0008-briefcase-ui.md
+    added: 2026-06-10
+    revised: ""
+  - purpose: save_system
+    status: active
+    api: Dictionary Serialization via FileAccess
+    not: ResourceSaver / ResourceLoader
+    adr: docs/architecture/adr-0009-save-system.md
+    reason: "ResourceLoader executes _init() on embedded scripts before type validation, creating an Arbitrary Code Execution (ACE) vulnerability for shared save files."
+    referenced_by:
+      - docs/architecture/adr-0009-save-system.md
+    added: 2026-06-10
+    revised: ""
 
 # Example:
 #
@@ -157,7 +289,73 @@ api_decisions: []
 # Register a pattern when an ADR explicitly bans it AND other ADRs might
 # unknowingly use it (i.e., it's a tempting but wrong approach for this project).
 
-forbidden_patterns: []
+forbidden_patterns:
+  - pattern: untyped_gdscript
+    status: active
+    description: "GDScript files must not use dynamic typing for variables or return types. Always use static typing (e.g., `: int`, `-> void`)."
+    why: "Dynamic typing leads to runtime errors. Static typing is required to maintain robustness, especially since we rejected C#."
+    adr: docs/architecture/adr-0001-core-gameplay-logic.md
+    added: 2026-06-09
+  - pattern: forward_plus_features
+    status: active
+    description: "Do not use rendering features exclusive to Forward+ (e.g., SDFGI, VoxelGI, advanced SSR)."
+    why: "The project uses the Compatibility renderer for HTML5 export. Forward+ features will break or not render correctly."
+    adr: docs/architecture/adr-0002-rendering-engine.md
+    added: 2026-06-09
+  - pattern: native_input_queries
+    status: active
+    description: "Gameplay code must not call `Input.is_action_pressed` or `Input.get_vector` directly. All gameplay input must be queried through the `InputManager` autoload."
+    why: "Direct native calls scatter input logic and break central features like input buffering or pausing."
+    adr: docs/architecture/adr-0003-input-handling.md
+    added: 2026-06-09
+  - pattern: worker_thread_pool_for_generation
+    status: active
+    description: "Do not use WorkerThreadPool for core procedural generation or loading tasks."
+    why: "Godot 4's WorkerThreadPool relies on SharedArrayBuffer, which can break HTML5/Web exports without specific server configurations."
+    adr: docs/architecture/adr-0004-procedural-generation-system.md
+    added: 2026-06-10
+  - pattern: floating_point_drift
+    status: active
+    description: "Do not rely on implicit float math for iterative geometric intersections. Must explicitly quantize spatial math using snapped() at every step."
+    why: "Cumulative floating-point drift will cause rays to miss targets over long multi-bounce sequences."
+    adr: docs/architecture/adr-0005-puzzle-solver-algorithm.md
+    added: 2026-06-10
+  - pattern: infinite_optical_loops
+    status: active
+    description: "Must use an integer `max_bounces` limit to prevent stack overflows during raycasting or traversal."
+    why: "Using a `visited` array or recursive function calls will crash the engine if the player creates an infinite optical loop."
+    adr: docs/architecture/adr-0006-beam-propagation-system.md
+    added: 2026-06-10
+  - pattern: ghost_state_persistence
+    status: active
+    description: "Nodes must not retain incoming beam data across frames. Arrays must be explicitly cleared by the manager before raycasting begins."
+    why: "If a beam is blocked upstream, the receiving node will falsely continue evaluating using state left over from the previous tick."
+    adr: docs/architecture/adr-0007-beam-convergence.md
+    added: 2026-06-10
+  - pattern: native_input_in_physics_process
+    status: active
+    description: "Do not check `Input.is_action_just_released()` or `just_pressed()` inside `_physics_process()`."
+    why: "Frame rate misalignment between physics ticks and rendering frames causes dropped inputs."
+    adr: docs/architecture/adr-0008-briefcase-ui.md
+    added: 2026-06-10
+  - pattern: cross_domain_raycasting
+    status: active
+    description: "2D UI Managers (like BriefcaseManager) must not execute 3D Physics Server raycasts."
+    why: "Couples UI state directly to the 3D physical world state, violating separation of concerns."
+    adr: docs/architecture/adr-0008-briefcase-ui.md
+    added: 2026-06-10
+  - pattern: resource_save_files
+    status: active
+    description: "Do not use ResourceSaver or ResourceLoader to read/write player save files."
+    why: "ResourceLoader will instantiate embedded scripts and execute _init() before type validation occurs, allowing malicious code execution from downloaded save files."
+    adr: docs/architecture/adr-0009-save-system.md
+    added: 2026-06-10
+  - pattern: non_atomic_saves
+    status: active
+    description: "Do not write directly to the primary save file path."
+    why: "If the game crashes or is terminated mid-write, the primary save file will be truncated and permanently corrupted. Must write to .tmp first and use DirAccess.rename()."
+    adr: docs/architecture/adr-0009-save-system.md
+    added: 2026-06-10
 
 # Example:
 #

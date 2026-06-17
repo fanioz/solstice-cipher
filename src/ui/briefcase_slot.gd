@@ -21,6 +21,12 @@ func _ready() -> void:
 	if count_label:
 		count_label.text = "x" + str(count)
 	modulate.a = 1.0 if count > 0 else 0.5
+	
+	mouse_entered.connect(_on_mouse_entered)
+
+func _on_mouse_entered() -> void:
+	if count > 0 and has_node("/root/AudioManager"):
+		get_node("/root/AudioManager").play_sfx("ui_hover")
 
 func consume_item() -> void:
 	if count > 0:

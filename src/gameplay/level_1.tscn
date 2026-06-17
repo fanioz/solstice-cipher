@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bbn0h52ow1t4f"]
+[gd_scene format=3 uid="uid://bbn0h52ow1t4f"]
 
 [ext_resource type="Script" path="res://src/gameplay/main.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://mirror_uid" path="res://src/gameplay/mirror.tscn" id="2_mirror"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://splitter_uid" path="res://src/gameplay/splitter.tscn" id="4_splitter"]
 [ext_resource type="PackedScene" uid="uid://cipher_ui_uid" path="res://src/ui/cipher_ui.tscn" id="5_ui"]
 [ext_resource type="Script" path="res://src/gameplay/board_drop_zone.gd" id="6_dropzone"]
+[ext_resource type="Script" path="res://src/ui/tutorial_ui.gd" id="7_tutorial"]
 [ext_resource type="PackedScene" path="res://src/ui/briefcase_ui.tscn" id="7_briefcase"]
 
 [sub_resource type="Environment" id="Environment_glow"]
@@ -16,7 +17,7 @@ glow_strength = 1.5
 glow_bloom = 0.5
 glow_hdr_threshold = 0.8
 
-[node name="Main" type="Node2D"]
+[node name="Level1" type="Node2D"]
 script = ExtResource("1_script")
 next_level_path = "res://src/gameplay/level_2.tscn"
 
@@ -62,6 +63,43 @@ anchors_preset = 0
 offset_right = 720.0
 offset_bottom = 1120.0
 script = ExtResource("6_dropzone")
+
+[node name="TutorialUI" type="CanvasLayer" parent="."]
+script = ExtResource("7_tutorial")
+
+[node name="Instruction1" type="Label" parent="TutorialUI"]
+offset_left = 60.0
+offset_top = 1040.0
+offset_right = 660.0
+offset_bottom = 1100.0
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 24
+text = "Drag a MIRROR from your briefcase to redirect the light beam."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Instruction2" type="Label" parent="TutorialUI"]
+offset_left = 60.0
+offset_top = 220.0
+offset_right = 660.0
+offset_bottom = 280.0
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 24
+text = "Hit the symbol 'I' with the beam to solve the cipher."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Instruction3" type="Label" parent="TutorialUI"]
+visible = false
+offset_left = 60.0
+offset_top = 400.0
+offset_right = 660.0
+offset_bottom = 460.0
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/font_size = 24
+text = "Drag the outer ring of the mirror to rotate it."
+horizontal_alignment = 1
+autowrap_mode = 2
 
 [node name="CipherUI" parent="." instance=ExtResource("5_ui")]
 

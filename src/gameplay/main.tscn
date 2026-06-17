@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://dyf0exio7k8m4"]
+
+[ext_resource type="Script" uid="uid://dc1dyfprpclok" path="res://src/gameplay/main.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://src/gameplay/symbol.tscn" id="3_symbol"]
+[ext_resource type="PackedScene" path="res://src/ui/cipher_ui.tscn" id="5_ui"]
+[ext_resource type="Script" uid="uid://csfherowx4y1y" path="res://src/gameplay/board_drop_zone.gd" id="6_dropzone"]
+[ext_resource type="PackedScene" path="res://src/ui/briefcase_ui.tscn" id="7_briefcase"]
+
+[sub_resource type="Environment" id="Environment_glow"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 1.5
+glow_strength = 1.5
+glow_bloom = 0.5
+glow_hdr_threshold = 0.8
+
+[node name="Main" type="Node2D" unique_id=971543235]
+script = ExtResource("1_script")
+next_level_path = "res://src/gameplay/level_2.tscn"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=997398300]
+environment = SubResource("Environment_glow")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1563632009]
+offset_left = -1000.0
+offset_top = -1000.0
+offset_right = 3000.0
+offset_bottom = 3000.0
+mouse_filter = 2
+color = Color(0.05, 0.05, 0.08, 1)
+
+[node name="DustParticles" type="CPUParticles2D" parent="." unique_id=1192174169]
+position = Vector2(640, 640)
+amount = 400
+lifetime = 15.0
+preprocess = 15.0
+emission_shape = 3
+emission_rect_extents = Vector2(1500, 1500)
+gravity = Vector2(0, -2)
+initial_velocity_min = 2.0
+initial_velocity_max = 10.0
+scale_amount_min = 3.0
+scale_amount_max = 8.0
+color = Color(1, 0.9, 0.5, 0.3)
+
+[node name="Sun" type="Marker2D" parent="." unique_id=1846186550]
+position = Vector2(100, 800)
+
+[node name="RayLines" type="Node2D" parent="." unique_id=1527319272]
+
+[node name="Symbol1" parent="." unique_id=513945048 instance=ExtResource("3_symbol")]
+position = Vector2(360, 300)
+letter = "I"
+
+[node name="BoardDropZone" type="Control" parent="." unique_id=641135624]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 720.0
+offset_bottom = 1120.0
+mouse_filter = 1
+script = ExtResource("6_dropzone")
+
+[node name="CipherUI" parent="." unique_id=439460910 instance=ExtResource("5_ui")]
+
+[node name="BriefcaseCanvas" type="CanvasLayer" parent="." unique_id=1492684542]
+
+[node name="BriefcaseUI" parent="BriefcaseCanvas" unique_id=162368890 instance=ExtResource("7_briefcase")]

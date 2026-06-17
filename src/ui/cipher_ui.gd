@@ -2,7 +2,26 @@ extends CanvasLayer
 
 signal cipher_solved
 
-@onready var container = $MarginContainer/HBoxContainer
+@onready var container = $MarginContainer/VBoxContainer/HBoxContainer
+@onready var level_label = $MarginContainer/VBoxContainer/LevelLabel
+
+const LEVEL_NAMES = {
+	1: "Introduction",
+	2: "Split",
+	3: "Sun",
+	4: "Grid Reflection",
+	5: "Ray Path",
+	6: "Light Wave",
+	7: "Arc Path",
+	8: "Orbit",
+	9: "Sky Vault",
+	10: "Daybreak",
+	11: "Dawn Refraction",
+	12: "Dusk Shadow",
+	13: "Star Field",
+	14: "Moonlight",
+	15: "Halo Corona"
+}
 
 var slots: Array = []
 var _is_solved: bool = false
@@ -21,6 +40,22 @@ func _ready() -> void:
 func setup_ui() -> void:
 	if not is_inside_tree():
 		return
+		
+	# Set level indicator text
+	var scene_name = get_tree().current_scene.name
+	var level_num_str = scene_name.trim_prefix("Level")
+	if level_num_str.is_valid_int():
+		var num = level_num_str.to_int()
+		var level_title = LEVEL_NAMES.get(num, "")
+		if level_title != "":
+			level_label.text = "LEVEL %d: %s" % [num, level_title.to_upper()]
+		else:
+			level_label.text = "LEVEL %d" % num
+	else:
+		level_label.text = scene_name.to_upper()
+		
+	level_label.add_theme_font_size_override("font_size", 20)
+	level_label.add_theme_color_override("font_color", Color(0.6, 0.8, 1.0, 0.7))
 		
 	var symbols = get_tree().get_nodes_in_group("symbols")
 	
