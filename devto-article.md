@@ -1,224 +1,61 @@
 ---
 title: "Building Solstice Cipher: A Light-Based Puzzle Game for the Browser"
-description: "How I built a complete browser puzzle game with light ray casting, mirror physics, and cipher decoding mechanics for the Dev.to Solstice Hackathon"
+description: "How I built a complete browser puzzle game with light ray casting, mirror physics, and cipher decoding mechanics for the Dev.to June Solstice Game Jam"
 published: false
-tags: [javascript, gamedev, webdev, hackathon]
+tags: [godot, gamedev, webdev, hackathon]
 canonical_url: https://github.com/fanioz/solstice-cipher
 cover_image: https://fanioz.github.io/solstice-cipher/screenshot.png
 ---
 
-# Building Solstice Cipher: A Light-Based Puzzle Game for the Browser
+*This is a submission for the [June Solstice Game Jam](https://dev.to/challenges/june-game-jam-2026-06-03)*
 
-When I saw the Dev.to Solstice Hackathon announcement, I wanted to create something that captured the essence of the solstice theme—light, shadow, and the transition from dawn to dusk. What started as a simple puzzle concept evolved into **Solstice Cipher**, a complete browser game where players manipulate mirrors to cast revealing shadows and decode ancient symbols.
+## What I Built
 
-## The Concept
+When I saw the Dev.to Solstice Game Jam announcement, I wanted to create something that captured the essence of the solstice theme—light, shadow, and the transition from dawn to dusk. What started as a simple puzzle concept evolved into **Solstice Cipher**, a complete browser puzzle game where players manipulate mirrors to cast revealing shadows and decode ancient symbols.
 
-The core idea was deceptively simple: create a puzzle game where players rotate mirrors to direct light rays onto hidden cipher symbols. Each revealed letter contributes to a larger message, and completing all five chambers (from Dawn to Sunset) reveals the complete solstice cipher.
+The core idea is deceptively simple: players rotate mirrors to direct light rays onto hidden cipher symbols. Each revealed letter contributes to a larger message, and completing all five chambers (from Dawn to Sunset) reveals the complete solstice cipher. You're literally "illuminating" hidden knowledge—perfect for a solstice-themed game about the journey from darkness to light.
 
-What appealed to me about this concept was the thematic connection between the mechanics and the subject matter. You're literally "illuminating" hidden knowledge—perfect for a solstice-themed game about the journey from darkness to light.
+You can play Solstice Cipher right here—no downloads required:
+{% embed https://solstice-cipher-game.vercel.app/ %}
 
-## Technical Architecture
+## Video Demo
 
-I wanted to keep this as a single-file implementation using vanilla JavaScript. No frameworks, no build tools—just pure browser APIs. This decision made the game instantly playable and easy to host anywhere.
+{% embed https://www.youtube.com/watch?v=YOUR_VIDEO_ID_HERE %}
 
-### The Game Loop
+## Code
 
-The game follows a straightforward state machine:
+{% github fanioz/solstice-cipher %}
 
-```javascript
-const game = {
-    currentRoomIndex: 0,
-    selectedMirror: null,
-    collectedSymbols: [],
-    isComplete: false
-};
-```
+## How I Built It
 
-Each room contains mirrors, cipher symbols, and a sun position. When the player rotates a mirror, the game recalculates all light rays and checks which cipher symbols are illuminated.
+I didn't write a single line of GDScript by hand. Instead, I took on the role of Game Director, and used **Google Antigravity**—a Gemini-powered autonomous coding agent—as my lead programmer.
 
-### Light Ray Casting
+I chose **Godot 4.6** as our target engine, utilizing its **Compatibility Renderer (WebGL 2)** for smooth HTML5 browser exports. My process was entirely prompt-driven and architecturally focused:
 
-The most challenging technical problem was implementing realistic light reflection. I needed to:
+### 1. Establishing Architecture Decision Records (ADRs)
+Before any code was written, I worked with Antigravity to establish strict ADRs. We defined the constraints: the light beams had to snap to 15-degree increments, saves had to be atomic to prevent corruption, and drag-and-drop had to work via physics proxies. By setting these ground rules, the AI had a solid framework to generate code that actually worked together.
 
-1. Cast rays from the sun to each mirror
-2. Calculate the reflection angle based on the mirror's rotation
-3. Cast the reflected ray across the room
-4. Detect when reflected rays hit cipher symbols
+### 2. Delegating the Raycasting Physics
+The most mathematically complex part of the game was the light reflection. Instead of wrestling with trigonometry, I instructed the AI to leverage Godot's Jolt-backed `PhysicsDirectSpaceState3D`. Antigravity generated the implementation, using `intersect_ray()` to cast beams from the sun and `Vector3.bounce()` to calculate precise 15-degree reflections off the mirror colliders. 
 
-Here's the core ray-casting logic:
+### 3. Procedural Puzzle Generation
+To ensure we had enough content, I tasked Antigravity with writing a Wave Function Collapse algorithm to procedurally generate the puzzle rooms. I provided the constraints (the puzzles must be mathematically solvable without trapping the light), and the AI generated an A* backwards-solver that guarantees every room has a valid solution before it's even presented to the player.
 
-```javascript
-function castLightRays() {
-    room.querySelectorAll('.light-ray').forEach(ray => ray.remove());
+### The Shift in Development
+Building *Solstice Cipher* taught me that the role of a solo dev is changing. By offloading the raw syntax and API boilerplate to Google Antigravity, I was able to spend 100% of my time on game design, balance, and user experience.
 
-    const currentRoom = getCurrentRoom();
-    const sunX = currentRoom.sunPosition.x;
-    const sunY = currentRoom.sunPosition.y;
+## Prize Category
 
-    currentRoom.mirrors.forEach(mirror => {
-        const mirrorCenterX = mirror.x + 30;
-        const mirrorCenterY = mirror.y + 30;
+**Best Ode to Alan Turing**
 
-        // Ray from sun to mirror
-        createLightRay(sunX, sunY, mirrorCenterX, mirrorCenterY);
+*Solstice Cipher* is fundamentally a game about cryptography, computation, and mechanical decryption—an interactive homage to Alan Turing's legacy. 
 
-        // Calculate reflection angle based on mirror rotation
-        const incidentAngle = calculateAngle(sunX, sunY, mirrorCenterX, mirrorCenterY);
-        const normalAngle = mirror.rotation - 90;
-        const reflectionAngle = 2 * normalAngle - incidentAngle - 180;
+Just as Turing's Bombe machine required engineers to meticulously align electrical rotors to complete a circuit and crack the Enigma code, players in *Solstice Cipher* must align optical mirrors to complete a light circuit and decode a hidden message. 
 
-        // Cast reflected ray
-        const rayLength = 800;
-        const reflectedEndX = mirrorCenterX + Math.cos(reflectionAngle * Math.PI / 180) * rayLength;
-        const reflectedEndY = mirrorCenterY + Math.sin(reflectionAngle * Math.PI / 180) * rayLength;
+Furthermore, the game's core mechanic operates as an "Optical Turing Machine." The mirrors and light beams function as physical logic gates within the game's universe. A cipher symbol is only revealed when the precise combination of angles creates a valid path—meaning every puzzle chamber is effectively a mechanical computer that the player must program using light. By blending cryptography with spatial logic, the game celebrates the intersection of mathematics and puzzle-solving that defined Turing's genius.
 
-        createLightRay(mirrorCenterX, mirrorCenterY, reflectedEndX, reflectedEndY, true);
+**Best Google AI Usage**
 
-        // Check if reflected ray hits any cipher symbols
-        currentRoom.cipherSymbols.forEach(symbol => {
-            if (rayHitsSymbol(mirrorCenterX, mirrorCenterY, reflectedEndX, reflectedEndY, symbol)) {
-                symbol.revealed = true;
-            }
-        });
-    });
+While the game itself doesn't make runtime API calls, its entire existence is a testament to Google's AI capabilities. *Solstice Cipher* was built from the ground up using **Google Antigravity**, a powerful Gemini-powered autonomous coding agent, acting as my Technical Director and Godot Engine Specialist. 
 
-    renderCipherSymbols();
-    updateDecodedMessage();
-}
-```
-
-The reflection formula uses the law of reflection: the angle of reflection equals the angle of incidence, measured from the surface normal. The key insight was realizing that the mirror's rotation value isn't the normal angle—I needed to subtract 90 degrees to get the actual surface normal.
-
-### Ray-Circle Collision Detection
-
-Detecting when a light ray hits a cipher symbol required calculating the distance from the symbol's center to the line segment representing the ray. I used point-to-line-segment distance calculation:
-
-```javascript
-function rayHitsSymbol(rayStartX, rayStartY, rayEndX, rayEndY, symbol) {
-    const symbolCenterX = symbol.x + 25;
-    const symbolCenterY = symbol.y + 25;
-
-    // Calculate distance from point to line segment
-    const A = rayStartX - symbolCenterX;
-    const B = rayStartY - symbolCenterY;
-    const C = rayEndX - rayStartX;
-    const D = rayEndY - rayStartY;
-
-    const dot = A * C + B * D;
-    const lenSq = C * C + D * D;
-    let param = -1;
-
-    if (lenSq !== 0) param = dot / lenSq;
-
-    let closestX, closestY;
-
-    if (param < 0) {
-        closestX = rayStartX;
-        closestY = rayStartY;
-    } else if (param > 1) {
-        closestX = rayEndX;
-        closestY = rayEndY;
-    } else {
-        closestX = rayStartX + param * C;
-        closestY = rayStartY + param * D;
-    }
-
-    const distance = calculateDistance(closestX, closestY, symbolCenterX, symbolCenterY);
-
-    return distance < 30;
-}
-```
-
-This calculates the closest point on the ray segment to the symbol's center, then checks if that distance is within the symbol's radius (30 pixels).
-
-## Challenges and Solutions
-
-### The Reflection Formula
-
-The biggest challenge was getting the light reflection physics right. My first attempt used simple angle addition, which produced completely wrong reflections. The light would bounce in impossible directions.
-
-I spent hours debugging this, drawing diagrams on paper and researching reflection physics. The breakthrough was realizing I needed to:
-
-1. Calculate the incident angle (from sun to mirror)
-2. Find the surface normal (mirror rotation minus 90 degrees)
-3. Apply the reflection formula: `reflectionAngle = 2 * normalAngle - incidentAngle - 180`
-
-The `-180` offset accounts for the coordinate system differences between mathematical angles and CSS rotations.
-
-### Visual Feedback
-
-Another challenge was making the game feel responsive. Players needed instant feedback when they rotated a mirror. I implemented this by:
-
-- Recalculating all rays immediately after each rotation
-- Animating cipher symbol revelation with CSS transitions
-- Showing the decoded message update in real-time
-
-The "aha!" moment when a player finally aligns the mirrors correctly and sees all symbols light up is pure satisfaction.
-
-### Mobile Responsiveness
-
-I wanted the game to work on mobile devices. This required restructuring the layout from side-by-side (game area + controls) to vertical stacking on smaller screens:
-
-```css
-@media (max-width: 768px) {
-    .game-area {
-        flex-direction: column;
-    }
-
-    h1 {
-        font-size: 1.8rem;
-    }
-}
-```
-
-The touch controls already worked since they were based on click events, but I added keyboard shortcuts (arrow keys and Q/E) for desktop players who prefer keyboard navigation.
-
-## What I Learned
-
-Building this game taught me several unexpected lessons:
-
-**Trigonometry in game development is non-negotiable.** I hadn't touched `Math.sin`, `Math.cos`, and `Math.atan2` since college, but they're fundamental to anything involving angles, movement, or collision detection.
-
-**Visual feedback is everything.** Early versions had no animations, and the game felt flat. Adding CSS transitions for symbol revelation, glow effects, and smooth mirror rotation made the game feel alive.
-
-**Scope matters.** I initially considered adding features like moving obstacles, limited rotation attempts, or a hint system. But for a hackathon submission, polishing the core mechanic was more valuable than half-implemented extras.
-
-**Single-file architecture has trade-offs.** While it makes deployment trivial, debugging a 900-line file with HTML, CSS, and JS mixed together is challenging. For future projects, I'd separate concerns even if bundling for deployment.
-
-## Play the Game
-
-You can play Solstice Cipher right here—no downloads required.
-
-{% embed https://fanioz.github.io/solstice-cipher/ }
-
-**[Get the source code](https://github.com/fanioz/solstice-cipher)** - Available under MIT license
-
-## The Complete Cipher
-
-Without spoiling too much, completing all five chambers reveals a message about the solstice theme itself. The journey from dawn's first light to sunset's final shadow mirrors the player's progression through the game's mechanics.
-
-Each chamber represents a time of day, and the collected symbols form a poetic reflection on light, shadow, and the cyclical nature of the solstice.
-
-## Discussion
-
-I'd love to hear your thoughts on puzzle game design:
-
-**What's your approach to balancing puzzle difficulty?** Do you prefer hand-holding with hints, or do you let players struggle through the "aha!" moments on their own?
-
-I chose to keep Solstice Cipher relatively simple—each room has 3-5 mirrors and 3-4 symbols, and the solutions are rarely more than a few rotations away. But I wonder if I should have added a hint system for frustrated players, or if the simplicity is part of the charm.
-
-Let me know in the comments how you approach puzzle design in your own games!
-
----
-
-**Technical Details:**
-- **Language:** Vanilla JavaScript (ES6+)
-- **Rendering:** Pure DOM manipulation (no Canvas)
-- **File Structure:** Single HTML file (~1000 lines)
-- **Browser Support:** All modern browsers
-- **Mobile:** Responsive design with touch controls
-
-**Hackathon:** Dev.to Solstice Hackathon 2026
-**Theme:** Solstice / Light & Shadow
-**Play Time:** 5-10 minutes
-**Difficulty:** Beginner-friendly
+From finalizing the Game Design Documents (GDD) and structuring Architecture Decision Records (ADRs), to writing complex GDScript for the Jolt Physics raycasting and wave-function collapse procedural generation, Gemini co-developed every aspect of the project. It even helped me solve complex floating-point drift issues with the 15-degree light bounces! This project demonstrates the immense power of Google AI not just as an interactive feature, but as a robust game development partner.

@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <a href="https://solsticechiper.vercel.app/"><img src="https://img.shields.io/badge/Play_on_Web-solsticechiper.vercel.app-000000?style=for-the-badge&logo=vercel" alt="Play on Vercel"></a>
+  <a href="https://solstice-cipher-game.vercel.app/"><img src="https://img.shields.io/badge/Play_on_Web-solstice--cipher--game.vercel.app-000000?style=for-the-badge&logo=vercel" alt="Play on Vercel"></a>
   <img src="https://img.shields.io/badge/Godot_4.6-%23FFFFFF.svg?style=for-the-badge&logo=godot-engine" alt="Godot 4.6">
   <img src="https://img.shields.io/badge/Platform-Web%20%7C%20Android-blue?style=for-the-badge" alt="Platforms">
 </p>
