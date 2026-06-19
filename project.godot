@@ -18,6 +18,7 @@ config/name="Solstice Cipher"
 config/description="A light-based puzzle game for the browser."
 run/main_scene="res://src/ui/title_screen.tscn"
 config/features=PackedStringArray("4.6", "GL Compatibility")
+config/icon="res://icon.png"
 
 [autoload]
 
