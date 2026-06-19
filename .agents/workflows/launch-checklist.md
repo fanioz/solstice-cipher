@@ -1,1 +1,0 @@
-../../.claude/skills/launch-checklist/SKILL.md

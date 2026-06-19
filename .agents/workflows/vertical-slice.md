@@ -1,1 +1,0 @@
-../../.claude/skills/vertical-slice/SKILL.md

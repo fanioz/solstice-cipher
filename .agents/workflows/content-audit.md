@@ -1,1 +1,0 @@
-../../.claude/skills/content-audit/SKILL.md

@@ -1,1 +1,0 @@
-../../.claude/skills/patch-notes/SKILL.md

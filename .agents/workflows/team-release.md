@@ -1,1 +1,0 @@
-../../.claude/skills/team-release/SKILL.md

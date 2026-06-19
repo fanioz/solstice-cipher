@@ -1,1 +1,0 @@
-../../.claude/skills/milestone-review/SKILL.md

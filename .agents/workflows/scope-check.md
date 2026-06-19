@@ -1,1 +1,0 @@
-../../.claude/skills/scope-check/SKILL.md

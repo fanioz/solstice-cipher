@@ -1,1 +1,0 @@
-../../.claude/skills/regression-suite/SKILL.md

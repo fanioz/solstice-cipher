@@ -1,1 +1,0 @@
-../../.claude/skills/skill-improve/SKILL.md

@@ -1,1 +1,0 @@
-../../.claude/skills/propagate-design-change/SKILL.md

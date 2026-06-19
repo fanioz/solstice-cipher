@@ -1,1 +1,0 @@
-../../.claude/skills/day-one-patch/SKILL.md

@@ -1,1 +1,0 @@
-../../.claude/skills/asset-audit/SKILL.md

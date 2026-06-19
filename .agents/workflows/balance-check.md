@@ -1,1 +1,0 @@
-../../.claude/skills/balance-check/SKILL.md

@@ -1,1 +1,0 @@
-../../.claude/skills/sprint-plan/SKILL.md

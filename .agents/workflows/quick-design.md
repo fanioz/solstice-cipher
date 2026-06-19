@@ -1,1 +1,0 @@
-../../.claude/skills/quick-design/SKILL.md

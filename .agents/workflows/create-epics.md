@@ -1,1 +1,0 @@
-../../.claude/skills/create-epics/SKILL.md

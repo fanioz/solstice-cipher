@@ -1,1 +1,0 @@
-../../.claude/skills/story-readiness/SKILL.md

@@ -22,7 +22,7 @@ func load_state_dict(data: Dictionary) -> void:
 	if data.has("max_unlocked_level"):
 		var lvl = data["max_unlocked_level"]
 		if typeof(lvl) == TYPE_INT or typeof(lvl) == TYPE_FLOAT:
-			current_max_unlocked_level = int(lvl)
+			current_max_unlocked_level = clampi(int(lvl), 1, 100)
 
 func save_game() -> void:
 	# Story 002: Atomic File Writing
@@ -87,10 +87,10 @@ func load_settings() -> void:
 		apply_settings(0.0, -6.0, 0.0, false)
 		return
 		
-	var master_vol = config.get_value("audio", "master_volume", 0.0)
-	var bgm_vol = config.get_value("audio", "bgm_volume", -6.0)
-	var sfx_vol = config.get_value("audio", "sfx_volume", 0.0)
-	var fullscreen = config.get_value("video", "fullscreen", false)
+	var master_vol = clampf(float(config.get_value("audio", "master_volume", 0.0)), -80.0, 24.0)
+	var bgm_vol = clampf(float(config.get_value("audio", "bgm_volume", -6.0)), -80.0, 24.0)
+	var sfx_vol = clampf(float(config.get_value("audio", "sfx_volume", 0.0)), -80.0, 24.0)
+	var fullscreen: bool = bool(config.get_value("video", "fullscreen", false))
 	
 	apply_settings(master_vol, bgm_vol, sfx_vol, fullscreen)
 

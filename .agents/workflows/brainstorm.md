@@ -1,1 +1,0 @@
-../../.claude/skills/brainstorm/SKILL.md
