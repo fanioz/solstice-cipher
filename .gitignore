@@ -1,10 +1,19 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
-.gemini/
+.gemini
 .claude/
 .DS_Store
 build/
 .worktrees/
 .repolore/
 keystores/
+
+# Prevent accidental credential commits
+export_presets.cfg
+.env*
+*.keystore
+*.jks
+*.pem
+*.key
+*.p12
